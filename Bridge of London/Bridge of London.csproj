@@ -59,6 +59,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\API\LuaApiManager.cs" />
     <Compile Include="Core\BridgeOfLondon.cs" />
     <Compile Include="Core\Config.cs" />
     <Compile Include="Program.cs" />

@@ -6,6 +6,10 @@
     using System.Linq;
     using System.Reflection;
 
+    using global::BridgeOfLondon.Core.API;
+
+    using LeagueSharp;
+
     using MoonSharp.Interpreter;
 
     /// <summary>
@@ -91,7 +95,56 @@
                 Directory.CreateDirectory(this.Config.LibraryDirectory);
             }
 
+            Script.WarmUp();
             UserData.RegisterAssembly(Assembly.GetExecutingAssembly());
+
+            foreach (var luaLibrary in Directory.GetFiles(this.Config.ScriptDirectory))
+            {
+                try
+                {
+                    var script = new Script(this.Config.SandboxLevel);
+
+                    LuaApiManager.AddApi(script);
+                    script.DoFile(luaLibrary);
+
+                    this.Libraries.Add(script);
+                }
+                catch (Exception e)
+                {
+                    this.PrintMessage("Error attempting to load \"{0}\". Check console for details.", Path.GetFileName(luaLibrary));
+                    Console.WriteLine(e);
+                }
+            }
+
+            foreach (var luaScript in Directory.GetFiles(this.Config.ScriptDirectory))
+            {
+                try
+                {
+                    var script = new Script(this.Config.SandboxLevel);
+
+                    LuaApiManager.AddApi(script);
+
+                    foreach (var library in Libraries)
+                    {
+                        script.LoadString(library.GetSourceCode(0).Code);
+                    }
+
+                    script.DoFile(luaScript);
+
+                    this.Libraries.Add(script);
+                }
+                catch (Exception e)
+                {
+                    this.PrintMessage("Error attempting to load \"{0}\". Check console for details.", Path.GetFileName(luaScript));
+                    Console.WriteLine(e);
+                }
+            }
+        }
+
+        public void PrintMessage(string format, params object[] args)
+        {
+            Game.PrintChat(
+               "<font color=\"#3399FF\"><b>Bridge of London:</b></font> <font color=\"#FFFFFF\">" + string.Format(format, args) + "</font>");
         }
 
         #endregion
