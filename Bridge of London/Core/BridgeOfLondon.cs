@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
     using System.Reflection;
 
     using global::BridgeOfLondon.Core.API;
@@ -11,6 +10,7 @@
     using LeagueSharp;
 
     using MoonSharp.Interpreter;
+    using MoonSharp.Interpreter.Loaders;
 
     /// <summary>
     ///     Bridge of London
@@ -28,29 +28,12 @@
         public static BridgeOfLondon Instance { get; } = new BridgeOfLondon();
 
         /// <summary>
-        ///     Gets all scripts.
-        /// </summary>
-        /// <value>
-        ///     All scripts.
-        /// </value>
-        // TODO Optimize this
-        public IEnumerable<Script> AllScripts => this.Scripts.Concat(this.Libraries);
-
-        /// <summary>
         ///     Gets or sets the configuration.
         /// </summary>
         /// <value>
         ///     The configuration.
         /// </value>
         public Config Config { get; set; }
-
-        /// <summary>
-        ///     Gets the libraries.
-        /// </summary>
-        /// <value>
-        ///     The libraries.
-        /// </value>
-        public List<Script> Libraries { get; } = new List<Script>();
 
         /// <summary>
         ///     Gets the scripts.
@@ -76,6 +59,18 @@
             this.LoadScripts();
         }
 
+        /// <summary>
+        ///     Prints the message.
+        /// </summary>
+        /// <param name="format">The format.</param>
+        /// <param name="args">The arguments.</param>
+        public void PrintMessage(string format, params object[] args)
+        {
+            Game.PrintChat(
+                "<font color=\"#3399FF\"><b>Bridge of London:</b></font> <font color=\"#FFFFFF\">"
+                + string.Format(format, args) + "</font>");
+        }
+
         #endregion
 
         #region Methods
@@ -98,24 +93,6 @@
             Script.WarmUp();
             UserData.RegisterAssembly(Assembly.GetExecutingAssembly());
 
-            foreach (var luaLibrary in Directory.GetFiles(this.Config.ScriptDirectory))
-            {
-                try
-                {
-                    var script = new Script(this.Config.SandboxLevel);
-
-                    LuaApiManager.AddApi(script);
-                    script.DoFile(luaLibrary);
-
-                    this.Libraries.Add(script);
-                }
-                catch (Exception e)
-                {
-                    this.PrintMessage("Error attempting to load \"{0}\". Check console for details.", Path.GetFileName(luaLibrary));
-                    Console.WriteLine(e);
-                }
-            }
-
             foreach (var luaScript in Directory.GetFiles(this.Config.ScriptDirectory))
             {
                 try
@@ -124,27 +101,21 @@
 
                     LuaApiManager.AddApi(script);
 
-                    foreach (var library in Libraries)
-                    {
-                        script.LoadString(library.GetSourceCode(0).Code);
-                    }
+                    ((ScriptLoaderBase)script.Options.ScriptLoader).ModulePaths = new[] { "Common/?", "Common/?.lua" };
+                    ((ScriptLoaderBase)script.Options.ScriptLoader).IgnoreLuaPathGlobal = true;
 
                     script.DoFile(luaScript);
 
-                    this.Libraries.Add(script);
+                    this.Scripts.Add(script);
                 }
                 catch (Exception e)
                 {
-                    this.PrintMessage("Error attempting to load \"{0}\". Check console for details.", Path.GetFileName(luaScript));
+                    this.PrintMessage(
+                        "Error attempting to load \"{0}\". Check console for details.", 
+                        Path.GetFileName(luaScript));
                     Console.WriteLine(e);
                 }
             }
-        }
-
-        public void PrintMessage(string format, params object[] args)
-        {
-            Game.PrintChat(
-               "<font color=\"#3399FF\"><b>Bridge of London:</b></font> <font color=\"#FFFFFF\">" + string.Format(format, args) + "</font>");
         }
 
         #endregion

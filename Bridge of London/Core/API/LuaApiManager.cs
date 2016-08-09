@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BridgeOfLondon.Core.API
+﻿namespace BridgeOfLondon.Core.API
 {
     using MoonSharp.Interpreter;
 
-    class LuaApiManager
+    internal class LuaApiManager
     {
+        #region Public Methods and Operators
+
         public static void AddApi(Script script)
         {
-            
         }
+
+        #endregion
     }
 }
