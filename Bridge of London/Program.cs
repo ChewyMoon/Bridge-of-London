@@ -1,15 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Bridge_of_London
+﻿namespace BridgeOfLondon
 {
-    class Program
+    using BridgeOfLondon.Core;
+
+    using LeagueSharp.Common;
+
+    internal class Program
     {
-        static void Main(string[] args)
+        #region Methods
+
+        private static void Main(string[] args)
         {
+            CustomEvents.Game.OnGameLoad += BridgeOfLondon.Instance.OnLoad;
         }
+
+        #endregion
     }
 }
