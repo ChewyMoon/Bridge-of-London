@@ -26,6 +26,9 @@ namespace BridgeOfLondon.Core.API.Game
     {
         private readonly Obj_AI_Base _unit;
 
+        #region public properties
+
+
         /// <summary>
         /// Gets the name of the unit
         /// </summary>
@@ -39,7 +42,8 @@ namespace BridgeOfLondon.Core.API.Game
         /// <summary>
         /// Gets the level of the hero.
         /// </summary>
-        public int level {
+        public int level
+        {
             get
             {
                 if (_unit.Type == GameObjectType.obj_AI_Hero)
@@ -234,7 +238,7 @@ namespace BridgeOfLondon.Core.API.Game
         /// TODO
         /// </summary>
         public bool isFeared => false;
-        
+
         /// <summary>
         /// TODO
         /// </summary>
@@ -269,6 +273,87 @@ namespace BridgeOfLondon.Core.API.Game
         /// TODO 
         /// </summary>
         public GameUnit spellOwner => this;
+
+        #endregion
+
+        #region BOLAPI Methods
+
+
+        public bool HoldPosition()
+        {
+            if (_unit.Type != GameObjectType.obj_AI_Hero)
+            {
+                return false;
+            }
+            return _unit.IssueOrder(GameObjectOrder.HoldPosition, _unit);
+        }
+
+        public bool Attack(float x, float z)
+        {
+            if (_unit.Type != GameObjectType.obj_AI_Hero)
+            {
+                return false;
+            }
+            return _unit.IssueOrder(GameObjectOrder.AttackTo, new Vector3(x, z, 0));
+        }
+
+        public double GetDistance(GameObject gameObject)
+        {
+            return _unit.Distance(gameObject.Position);
+        }
+
+        public double CalcDamage(Obj_AI_Base obj, double maxDamage)
+        {
+            return Math.Min(_unit.CalcDamage(obj, Damage.DamageType.Physical, _unit.TotalAttackDamage), maxDamage);
+        }
+
+        //TODO
+        public double CalcMagicDamage(Obj_AI_Base obj, double maxMagicDamage)
+        {
+            return 0d;
+        }
+
+        //TODO BolObject
+        public object getBuff(int index)
+        {
+            return _unit.Buffs[index];
+        }
+
+        /// <summary>
+        /// TODO match bol API
+        /// Gets the item id on slot index
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns>item id</returns>
+        public ItemId getInventorySlot(int index)
+        {
+            return getItem(index).IData.Id;
+
+
+        }
+
+        /// <summary>
+        /// TODO match Bol API
+        /// Gets the inventory Slot on slot index
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns>Inventory slot</returns>
+        public InventorySlot getItem(int index)
+        {
+            return _unit.InventoryItems[index];
+        }
+
+        public SpellData GetSpellData(SpellSlot spellSlot)
+        {
+            return _unit.Spellbook.GetSpell(spellSlot).SData;
+        }
+
+        public bool CanUseSpell(SpellSlot spellSlot)
+        {
+            return _unit.Spellbook.CanUseSpell(spellSlot) == SpellState.Ready;
+        }
+
+        #endregion
 
         public GameUnit(Obj_AI_Base objBase)
         {
