@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
+    using System.Reflection;
 
     using MoonSharp.Interpreter;
 
@@ -15,13 +16,13 @@
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes the <see cref="LuaApiManager"/> class.
+        /// Initializes static members of the <see cref="LuaApiManager"/> class. 
         /// </summary>
         static LuaApiManager()
         {
             ApiProviders =
-                AppDomain.CurrentDomain.GetAssemblies()
-                    .SelectMany(s => s.GetTypes())
+                Assembly.GetExecutingAssembly()
+                    .GetTypes()
                     .Where(p => typeof(ILuaApiProvider).IsAssignableFrom(p))
                     .Select(x => Expression.Lambda<Func<ILuaApiProvider>>(Expression.New(x)).Compile()());
         }
