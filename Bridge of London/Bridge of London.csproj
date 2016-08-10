@@ -60,6 +60,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\API\Callbacks\CallbackProvider.cs" />
+    <Compile Include="Core\API\Callbacks\LoadCallback.cs" />
+    <Compile Include="Core\API\Callbacks\TickCallback.cs" />
     <Compile Include="Core\API\Drawings.cs" />
     <Compile Include="Core\API\Game\Buff.cs" />
     <Compile Include="Core\API\Game\GameUnit.cs" />
