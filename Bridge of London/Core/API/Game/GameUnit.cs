@@ -320,37 +320,37 @@ namespace BridgeOfLondon.Core.API.Game
         }
 
         /// <summary>
-        /// TODO match bol API
         /// Gets the item id on slot index
         /// </summary>
         /// <param name="index"></param>
         /// <returns>item id</returns>
-        public ItemId getInventorySlot(int index)
+        public int getInventorySlot(int index)
         {
-            return getItem(index).IData.Id;
-
-
+            return getItem(index).id;
         }
 
         /// <summary>
-        /// TODO match Bol API
         /// Gets the inventory Slot on slot index
         /// </summary>
         /// <param name="index"></param>
         /// <returns>Inventory slot</returns>
-        public InventorySlot getItem(int index)
+        public LoLItem getItem(int index)
         {
-            return _unit.InventoryItems[index];
+            return _unit.InventoryItems[index].ToBolLoLItem();
         }
 
-        public SpellData GetSpellData(SpellSlot spellSlot)
+        private SpellDataInst GetSpellInst(SpellSlot spellSlot)
         {
-            return _unit.Spellbook.GetSpell(spellSlot).SData;
+            return _unit.Spellbook.GetSpell(spellSlot);
+        }
+        public Spell GetSpellData(SpellSlot spellSlot)
+        {
+            return GetSpellInst(spellSlot).ToBolSpell();
         }
 
         public bool CanUseSpell(SpellSlot spellSlot)
         {
-            return _unit.Spellbook.CanUseSpell(spellSlot) == SpellState.Ready;
+            return GetSpellInst(spellSlot).IsReady();
         }
 
         #endregion
