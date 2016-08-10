@@ -82,7 +82,7 @@ namespace BridgeOfLondon.Core.API.Game
         /// <summary>
         /// Returns False not sure how this is implemented in L#
         /// </summary>
-        public bool isAi => false; //maybe .isZombie?
+        public bool isAi => !_unit.PlayerControlled; //maybe .isZombie?
 
         /// <summary>
         /// Returns true if the unit is the local player
@@ -125,24 +125,24 @@ namespace BridgeOfLondon.Core.API.Game
 
         public bool bInvulnerable => _unit.IsInvulnerable;
 
-        public bool bPhysImune => bInvulnerable;
+        public bool bPhysImune => _unit.PhysicalImmune;
 
-        public bool bMagicImune => bInvulnerable;
+        public bool bMagicImune => _unit.MagicImmune;
 
         public bool bTargetable => _unit.IsTargetable;
 
         /// <summary>
         /// Not Implemented
         /// </summary>
-        public bool bTargetableToTeam => true;
+        public bool bTargetableToTeam => _unit.IsValidTarget(float.MaxValue, false) && _unit.IsAlly;
 
         public bool controlled => _unit.PlayerControlled;
 
-        public float cdr => _unit.PercentCooldownMod;
+        public float cdr => _unit.FlatCooldownMod;
 
-        public float critChange => _unit.Crit;
+        public float critChange => _unit.FlatCritChanceMod;
 
-        public float critDmg => _unit.CritDamageMultiplier;
+        public float critDmg => _unit.FlatCritDamageMod;
 
         public float hpPool => _unit.FlatHPPoolMod;
 
@@ -217,57 +217,27 @@ namespace BridgeOfLondon.Core.API.Game
 
         public bool canMove => _unit.CanMove;
 
-        /// <summary>
-        /// TODO
-        /// </summary>
-        public bool isStealthed => !_unit.IsVisible;
+        public bool isStealthed => _unit.CharacterState.HasFlag(GameObjectCharacterState.IsStealth);
 
-        /// <summary>
-        /// TODO
-        /// </summary>
-        public bool isRevealSpecificUnit => false;
+        public bool isRevealSpecificUnit => _unit.CharacterState.HasFlag(GameObjectCharacterState.RevealSpecificUnit);
 
-        /// <summary>
-        /// TODO
-        /// </summary>
-        public bool isTaunted => false;
+        public bool isTaunted => _unit.CharacterState.HasFlag(GameObjectCharacterState.Taunted);
 
         public bool isCharmed => _unit.IsCharmed;
 
-        /// <summary>
-        /// TODO
-        /// </summary>
-        public bool isFeared => false;
+        public bool isFeared => _unit.CharacterState.HasFlag(GameObjectCharacterState.Feared);
 
-        /// <summary>
-        /// TODO
-        /// </summary>
-        public bool isAsleep => false;
+        public bool isAsleep => _unit.CharacterState.HasFlag(GameObjectCharacterState.Asleep);
 
-        /// <summary>
-        /// TODO
-        /// </summary>
-        public bool isNearSight => false;
+        public bool isNearSight => _unit.CharacterState.HasFlag(GameObjectCharacterState.NearSight);
 
-        /// <summary>
-        /// TODO
-        /// </summary>
-        public bool isGhosted => false;
+        public bool isGhosted => _unit.CharacterState.HasFlag(GameObjectCharacterState.Ghosted);
 
-        /// <summary>
-        /// TODO Probably wrong
-        /// </summary>
-        public bool isNoRender => !_unit.IsHPBarRendered;
+        public bool isNoRender => _unit.CharacterState.HasFlag(GameObjectCharacterState.NoRender);
 
-        /// <summary>
-        /// TODO proper implementation
-        /// </summary>
-        public bool isFleeing => !_unit.IsFacing(ObjectManager.Player);
+        public bool isFleeing => _unit.CharacterState.HasFlag(GameObjectCharacterState.Fleeing);
 
-        /// <summary>
-        /// TODO proper implementation
-        /// </summary>
-        public bool isForceRenderParticles => _unit.IsHPBarRendered;
+        public bool isForceRenderParticles => _unit.CharacterState.HasFlag(GameObjectCharacterState.ForceRenderParticles);
 
         /// <summary>
         /// TODO 
