@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
-using BridgeOfLondon.Core.API.Helpers;
+﻿using BridgeOfLondon.Core.API.Helpers;
 using LeagueSharp;
 using LeagueSharp.Common;
 using MoonSharp.Interpreter;
@@ -278,16 +272,20 @@ namespace BridgeOfLondon.Core.API.Game
             return _unit.CalcDamage(obj, Damage.DamageType.Physical, attackDamage);
         }
 
-        //TODO
         public double CalcMagicDamage(Obj_AI_Base obj, double magicalDamage)
         {
             return _unit.CalcDamage(obj, Damage.DamageType.Magical, magicalDamage);
         }
 
-        //TODO BolObject
-        public object getBuff(int index)
+        /// <summary>
+        /// Get buff at index
+        /// I think I have to -1 since lua indexes start at 0
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns>Buff</returns>
+        public Buff getBuff(int index)
         {
-            return _unit.Buffs[index];
+            return _unit.Buffs[index-1]?.ToBolBuff();
         }
 
         /// <summary>
@@ -319,9 +317,9 @@ namespace BridgeOfLondon.Core.API.Game
             return GetSpellInst(spellSlot).ToBolSpell();
         }
 
-        public bool CanUseSpell(SpellSlot spellSlot)
+        public SpellState CanUseSpell(SpellSlot spellSlot)
         {
-            return GetSpellInst(spellSlot).IsReady();
+            return GetSpellInst(spellSlot).State;
         }
 
         #endregion
