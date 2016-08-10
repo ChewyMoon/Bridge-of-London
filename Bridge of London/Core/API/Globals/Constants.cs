@@ -26,6 +26,7 @@
             this.RegisterWindow(script);
             this.RegisterWndProc(script);
             this.RegisterPingCategory(script);
+            script.Globals["LeagueSharp"] = true;
         }
 
         /// <summary>
@@ -103,7 +104,7 @@
             script.Globals["TEAM_BLUE"] = GameObjectTeam.Order;
             script.Globals["TEAM_RED"] = GameObjectTeam.Chaos;
             script.Globals["TEAM_NEUTRAL"] = GameObjectTeam.Neutral;
-            script.Globals["TEAM_ENEMY"] = ObjectManager.Player.Team == GameObjectTeam.Chaos
+            script.Globals["TEAM_ENEMY"] = ObjectManager.Player?.Team == GameObjectTeam.Chaos
                                                ? GameObjectTeam.Order
                                                : GameObjectTeam.Chaos;
         }

@@ -23,9 +23,10 @@ namespace BridgeOfLondon.Core.API
             script.Globals["DrawCircle"] = (Action<float,float,float,float,int>)this.DrawCircle;
         }
 
+        //TODO:
+        //Handle OnReset
         public void HookEvents()
         {
-            throw new NotImplementedException();
         }
 
         public void DrawText(string text, int size, float x, float y, Color color)
