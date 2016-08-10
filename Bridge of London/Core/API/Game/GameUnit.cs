@@ -712,6 +712,18 @@ namespace BridgeOfLondon.Core.API.Game
                    && this.unit.IssueOrder(GameObjectOrder.HoldPosition, this.unit);
         }
 
+        /// <summary>
+        /// Moves the unit to the given position
+        /// </summary>
+        /// <param name="x">x coordinate of position</param>
+        /// <param name="z">z coordinate of position</param>
+        /// <returns></returns>
+        public bool MoveTo(float x, float z)
+        {
+            return this.unit.Type == GameObjectType.obj_AI_Hero
+                   && this.unit.IssueOrder(GameObjectOrder.MoveTo, new Vector2(x,z).To3D2());
+        }
+
         #endregion
 
         #region Methods
