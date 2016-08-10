@@ -1,47 +1,121 @@
-﻿using System;
-using LeagueSharp;
-using MoonSharp.Interpreter;
-using SharpDX;
-
-namespace BridgeOfLondon.Core.API.Game
+﻿namespace BridgeOfLondon.Core.API.Game
 {
-     static class SpellDataInstExtensions
+    using System;
+
+    using LeagueSharp;
+
+    using MoonSharp.Interpreter;
+
+    using SharpDX;
+
+    /// <summary>
+    /// Provides extensions for the <see cref="SpellDataInst"/> class.
+    /// </summary>
+    internal static class SpellDataInstExtensions
     {
-         public static Spell ToBolSpell(this SpellDataInst spellDataInst)
+        #region Public Methods and Operators
+
+        /// <summary>
+        /// To the bol spell.
+        /// </summary>
+        /// <param name="spellDataInst">The spell data inst.</param>
+        /// <returns></returns>
+        public static Spell ToLuaSpell(this SpellDataInst spellDataInst)
         {
             return new Spell(spellDataInst);
         }
+
+        #endregion
     }
 
+    /// <summary>
+    /// A Lua representation of the <see cref="SpellDataInst" /> class.
+    /// </summary>
     [MoonSharpUserData]
     public class Spell
     {
+        #region Fields
 
-        #region BolApi members
+        /// <summary>
+        /// The end position
+        /// </summary>
+        public Vector3 endPos;
 
-        private readonly SpellDataInst _spellDataInst;
-
-        public string name => _spellDataInst.Name;
-
-        public int level => _spellDataInst.Level;
-
-        public float mana => _spellDataInst.ManaCost;
-
-        public float cd => _spellDataInst.Cooldown;
-
-        public float currentCd => Math.Max(_spellDataInst.CooldownExpires - LeagueSharp.Game.ClockTime, 0);
-
-        public float range => _spellDataInst.SData.CastRange;
-
+        /// <summary>
+        /// The start position
+        /// </summary>
         public Vector3 startPos;
-        public Vector3 endPosPos;
+
+        /// <summary>
+        /// The _spell data inst
+        /// </summary>
+        private readonly SpellDataInst _spellDataInst;
 
         #endregion
 
+        #region Constructors and Destructors
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Spell"/> class.
+        /// </summary>
+        /// <param name="spellDataInst">The spell data inst.</param>
         public Spell(SpellDataInst spellDataInst)
         {
-            _spellDataInst = spellDataInst;
+            this._spellDataInst = spellDataInst;
         }
+
+        #endregion
+
+        #region Public Properties
+
+        /// <summary>
+        /// Gets the cooldown of the spell.
+        /// </summary>
+        /// <value>
+        /// The cooldown.
+        /// </value>
+        public float cd => this._spellDataInst.Cooldown;
+
+        /// <summary>
+        /// Gets the current cooldown.
+        /// </summary>
+        /// <value>
+        /// The current coodown.
+        /// </value>
+        public float currentCd => Math.Max(this._spellDataInst.CooldownExpires - Game.ClockTime, 0);
+
+        /// <summary>
+        /// Gets the level.
+        /// </summary>
+        /// <value>
+        /// The level.
+        /// </value>
+        public int level => this._spellDataInst.Level;
+
+        /// <summary>
+        /// Gets the mana.
+        /// </summary>
+        /// <value>
+        /// The mana.
+        /// </value>
+        public float mana => this._spellDataInst.ManaCost;
+
+        /// <summary>
+        /// Gets the name.
+        /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
+        public string name => this._spellDataInst.Name;
+
+        /// <summary>
+        /// Gets the range.
+        /// </summary>
+        /// <value>
+        /// The range.
+        /// </value>
+        public float range => this._spellDataInst.SData.CastRange;
+
+        #endregion
     }
 }

@@ -1,36 +1,63 @@
-﻿using System;
-using LeagueSharp;
-using MoonSharp.Interpreter;
-
-namespace BridgeOfLondon.Core.API.Globals
+﻿namespace BridgeOfLondon.Core.API.Globals
 {
+    using System;
+
+    using LeagueSharp;
+
+    using MoonSharp.Interpreter;
+
+    /// <summary>
+    /// Adds constant values to the Lua script.
+    /// </summary>
+    /// <seealso cref="BridgeOfLondon.Core.API.ILuaApiProvider" />
     internal class Constants : ILuaApiProvider
     {
+        #region Public Methods and Operators
+
+        /// <summary>
+        /// Adds the API.
+        /// </summary>
+        /// <param name="script">The script.</param>
         public void AddApi(Script script)
         {
-            RegisterSpellSlots(script);
-            RegisterSpellStates(script);
-            RegisterTeam(script);
-            RegisterWindow(script);
-            RegisterWndProc(script);
-            RegisterPingCategory(script);
+            this.RegisterSpellSlots(script);
+            this.RegisterSpellStates(script);
+            this.RegisterTeam(script);
+            this.RegisterWindow(script);
+            this.RegisterWndProc(script);
+            this.RegisterPingCategory(script);
         }
 
+        /// <summary>
+        /// Hooks the events.
+        /// </summary>
         public void HookEvents()
         {
-            throw new NotImplementedException();
+            
         }
 
-        private void RegisterSpellStates(Script script)
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Registers the ping category.
+        /// </summary>
+        /// <param name="script">The script.</param>
+        private void RegisterPingCategory(Script script)
         {
-            script.Globals["READY"] = SpellState.Ready;
-            script.Globals["NOTLEARNED"] = SpellState.NotLearned;
-            script.Globals["SUPRESSED"] = SpellState.Surpressed;
-            script.Globals["COOLDOWN"] = SpellState.Cooldown;
-            script.Globals["NOMANA"] = SpellState.NoMana;
-            script.Globals["UNKNOWN"] = SpellState.Unknown;
+            script.Globals["PING_ASSISTME"] = PingCategory.AssistMe;
+            script.Globals["PING_DANGER"] = PingCategory.Danger;
+            script.Globals["PING_ENEMYMISSING"] = PingCategory.EnemyMissing;
+            script.Globals["PING_FALLBACK"] = PingCategory.Fallback;
+            script.Globals["PING_NORMAL"] = PingCategory.Normal;
+            script.Globals["PING_ONMYWAY"] = PingCategory.OnMyWay;
         }
 
+        /// <summary>
+        /// Registers the spell slots.
+        /// </summary>
+        /// <param name="script">The script.</param>
         private void RegisterSpellSlots(Script script)
         {
             script.Globals["_Q"] = SpellSlot.Q;
@@ -53,14 +80,23 @@ namespace BridgeOfLondon.Core.API.Globals
         }
 
         /// <summary>
-        ///     TODO:
-        ///     Check values of GameOnOnWndProc
+        /// Registers the spell states.
         /// </summary>
-        /// <param name="script"></param>
-        private void RegisterWndProc(Script script)
+        /// <param name="script">The script.</param>
+        private void RegisterSpellStates(Script script)
         {
+            script.Globals["READY"] = SpellState.Ready;
+            script.Globals["NOTLEARNED"] = SpellState.NotLearned;
+            script.Globals["SUPRESSED"] = SpellState.Surpressed;
+            script.Globals["COOLDOWN"] = SpellState.Cooldown;
+            script.Globals["NOMANA"] = SpellState.NoMana;
+            script.Globals["UNKNOWN"] = SpellState.Unknown;
         }
 
+        /// <summary>
+        /// Registers the team.
+        /// </summary>
+        /// <param name="script">The script.</param>
         private void RegisterTeam(Script script)
         {
             script.Globals["TEAM_NONE"] = GameObjectTeam.Unknown;
@@ -68,10 +104,14 @@ namespace BridgeOfLondon.Core.API.Globals
             script.Globals["TEAM_RED"] = GameObjectTeam.Chaos;
             script.Globals["TEAM_NEUTRAL"] = GameObjectTeam.Neutral;
             script.Globals["TEAM_ENEMY"] = ObjectManager.Player.Team == GameObjectTeam.Chaos
-                ? GameObjectTeam.Order
-                : GameObjectTeam.Chaos;
+                                               ? GameObjectTeam.Order
+                                               : GameObjectTeam.Chaos;
         }
 
+        /// <summary>
+        /// Registers the window.
+        /// </summary>
+        /// <param name="script">The script.</param>
         private void RegisterWindow(Script script)
         {
             script.Globals["WINDOW_X"] = 0;
@@ -80,15 +120,15 @@ namespace BridgeOfLondon.Core.API.Globals
             script.Globals["WINDOW_H"] = Drawing.Height;
         }
 
-        private void RegisterPingCategory(Script script)
+        /// <summary>
+        ///     TODO:
+        ///     Check values of GameOnOnWndProc
+        /// </summary>
+        /// <param name="script"></param>
+        private void RegisterWndProc(Script script)
         {
-            script.Globals["PING_ASSISTME"] = PingCategory.AssistMe;
-            script.Globals["PING_DANGER"] = PingCategory.Danger;
-            script.Globals["PING_ENEMYMISSING"] = PingCategory.EnemyMissing;
-            script.Globals["PING_FALLBACK"] = PingCategory.Fallback;
-            script.Globals["PING_NORMAL"] = PingCategory.Normal;
-            script.Globals["PING_ONMYWAY"] = PingCategory.OnMyWay;
         }
 
+        #endregion
     }
 }

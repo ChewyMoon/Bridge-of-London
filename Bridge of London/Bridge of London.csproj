@@ -61,10 +61,10 @@
   <ItemGroup>
     <Compile Include="Core\API\Game\Buff.cs" />
     <Compile Include="Core\API\Game\GameUnit.cs" />
-    <Compile Include="Core\API\Game\LoLItem.cs" />
+    <Compile Include="Core\API\Game\LuaItem.cs" />
     <Compile Include="Core\API\Game\Spell.cs" />
     <Compile Include="Core\API\Globals\Constants.cs" />
-    <Compile Include="Core\API\Helpers\BolVector.cs" />
+    <Compile Include="Core\API\Helpers\LuaVector.cs" />
     <Compile Include="Core\API\ILuaApiProvider.cs" />
     <Compile Include="Core\API\LuaApiManager.cs" />
     <Compile Include="Core\BridgeOfLondon.cs" />
