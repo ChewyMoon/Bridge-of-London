@@ -645,9 +645,9 @@ namespace BridgeOfLondon.Core.API.Game
         /// </summary>
         /// <param name="spellSlot">The spell slot.</param>
         /// <returns></returns>
-        public bool CanUseSpell(SpellSlot spellSlot)
+        public SpellState CanUseSpell(SpellSlot spellSlot)
         {
-            return this.GetSpellInst(spellSlot).State == SpellState.Ready;
+            return this.GetSpellInst(spellSlot).State;
         }
 
         /// <summary>
