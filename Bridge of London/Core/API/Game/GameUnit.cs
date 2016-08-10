@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
+using BridgeOfLondon.Core.API.Helpers;
 using LeagueSharp;
 using LeagueSharp.Common;
 using MoonSharp.Interpreter;
@@ -197,11 +198,11 @@ namespace BridgeOfLondon.Core.API.Game
 
         public float gold => _unit.Gold;
 
-        public Vector3 pos => _unit.ServerPosition;
+        public BolVector pos => _unit.Position.ToBolVector();
 
-        public Vector3 minBBox => _unit.BBox.Minimum;
+        public BolVector minBBox => _unit.BBox.Minimum.ToBolVector();
 
-        public Vector3 maxBBox => _unit.BBox.Maximum;
+        public BolVector maxBBox => _unit.BBox.Maximum.ToBolVector();
 
         public string armorMaterial => _unit.ArmorMaterial;
 
@@ -272,15 +273,15 @@ namespace BridgeOfLondon.Core.API.Game
             return _unit.Distance(gameObject.Position);
         }
 
-        public double CalcDamage(Obj_AI_Base obj, double maxDamage)
+        public double CalcDamage(Obj_AI_Base obj, double attackDamage)
         {
-            return Math.Min(_unit.CalcDamage(obj, Damage.DamageType.Physical, _unit.TotalAttackDamage), maxDamage);
+            return _unit.CalcDamage(obj, Damage.DamageType.Physical, attackDamage);
         }
 
         //TODO
-        public double CalcMagicDamage(Obj_AI_Base obj, double maxMagicDamage)
+        public double CalcMagicDamage(Obj_AI_Base obj, double magicalDamage)
         {
-            return 0d;
+            return _unit.CalcDamage(obj, Damage.DamageType.Magical, magicalDamage);
         }
 
         //TODO BolObject
