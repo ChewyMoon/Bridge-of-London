@@ -13,8 +13,8 @@ namespace BridgeOfLondon.Core.API.Globals
             RegisterTeam(script);
             RegisterWindow(script);
             RegisterWndProc(script);
+            RegisterPingCategory(script);
         }
-
 
         public void HookEvents()
         {
@@ -79,5 +79,16 @@ namespace BridgeOfLondon.Core.API.Globals
             script.Globals["WINDOW_W"] = Drawing.Width;
             script.Globals["WINDOW_H"] = Drawing.Height;
         }
+
+        private void RegisterPingCategory(Script script)
+        {
+            script.Globals["PING_ASSISTME"] = PingCategory.AssistMe;
+            script.Globals["PING_DANGER"] = PingCategory.Danger;
+            script.Globals["PING_ENEMYMISSING"] = PingCategory.EnemyMissing;
+            script.Globals["PING_FALLBACK"] = PingCategory.Fallback;
+            script.Globals["PING_NORMAL"] = PingCategory.Normal;
+            script.Globals["PING_ONMYWAY"] = PingCategory.OnMyWay;
+        }
+
     }
 }
