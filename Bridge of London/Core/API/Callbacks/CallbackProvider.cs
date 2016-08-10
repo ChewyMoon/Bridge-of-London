@@ -21,7 +21,7 @@ namespace BridgeOfLondon.Core.API.Callbacks
         /// </summary>
         public void HookEvents()
         {
-            LeagueSharp.Game.OnStart += this.GameOnStart;
+            LeagueSharp.Common.CustomEvents.Game.OnGameLoad += this.GameOnGameLoad;
             LeagueSharp.Game.OnUpdate += this.GameOnUpdate;
         }
     }

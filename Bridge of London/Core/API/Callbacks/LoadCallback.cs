@@ -37,7 +37,7 @@ namespace BridgeOfLondon.Core.API.Callbacks
         /// Fired when the game is updated.
         /// </summary>
         /// <param name="args">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private void GameOnStart(EventArgs args)
+        private void GameOnGameLoad(EventArgs args)
         {
             if (LoadCallbacks == null)
             {
