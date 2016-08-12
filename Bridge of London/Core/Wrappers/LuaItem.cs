@@ -1,4 +1,4 @@
-﻿namespace BridgeOfLondon.Core.API.Game
+﻿namespace BridgeOfLondon.Core.Wrappers
 {
     using LeagueSharp;
 

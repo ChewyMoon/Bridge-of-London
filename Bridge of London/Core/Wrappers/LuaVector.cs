@@ -1,4 +1,4 @@
-﻿namespace BridgeOfLondon.Core.API.Helpers
+﻿namespace BridgeOfLondon.Core.Wrappers
 {
     using System;
 

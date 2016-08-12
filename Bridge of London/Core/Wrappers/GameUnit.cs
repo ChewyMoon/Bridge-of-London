@@ -1,8 +1,6 @@
 ﻿// ReSharper disable InconsistentNaming
-namespace BridgeOfLondon.Core.API.Game
+namespace BridgeOfLondon.Core.Wrappers
 {
-    using global::BridgeOfLondon.Core.API.Helpers;
-
     using LeagueSharp;
     using LeagueSharp.Common;
 
