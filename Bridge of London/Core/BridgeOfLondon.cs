@@ -1,4 +1,6 @@
-﻿namespace BridgeOfLondon.Core
+﻿using BridgeOfLondon.Core.API.Callbacks;
+
+namespace BridgeOfLondon.Core
 {
     using System;
     using System.Collections.Generic;
@@ -145,6 +147,10 @@
                     Console.WriteLine(e);
                 }
             }
+            var k = new CallbackProvider();
+            k.AddApi(LuaVM);
+            k.HookEvents();
+            k.RegisterStandardCalls(LuaVM);
         }
 
         #endregion

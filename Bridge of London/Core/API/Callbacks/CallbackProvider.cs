@@ -34,6 +34,32 @@
             GameObject.OnCreate += this.OnCreateObject;
         }
 
+        public void RegisterStandardCalls(Script script)
+        {
+            if (script.Globals["Environments"] == null)
+            {
+                return;
+            }
+            foreach (var tablePair in ((Table)script.Globals["Environments"]).Pairs)
+            {
+                var globals = (tablePair.Value.Table.Pairs);
+                //Console.WriteLine("Registering std calls for "+ tablePair.Key);
+                foreach (var pair2   in globals)
+                {
+                    //Console.WriteLine(pair2.Key + " " + pair2.Value.Type);
+                    switch (pair2.Key.String)
+                    {
+                        case "OnTick":
+                            AddTickCallback(pair2.Value.Function);
+                            break;
+                        case "OnDraw":
+                            AddDrawCallback(pair2.Value.Function);
+                            break;
+                    }
+                }
+            }
+        }
+
         #endregion
     }
 }

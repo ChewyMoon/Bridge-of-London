@@ -1,4 +1,6 @@
-﻿namespace BridgeOfLondon.Core.API
+﻿using BridgeOfLondon.Core.API.Callbacks;
+
+namespace BridgeOfLondon.Core.API
 {
     using System;
     using System.Collections.Generic;
@@ -23,7 +25,7 @@
             ApiProviders =
                 Assembly.GetExecutingAssembly()
                     .GetTypes()
-                    .Where(p => typeof(ILuaApiProvider).IsAssignableFrom(p) && !p.IsInterface)
+                    .Where(p => typeof(ILuaApiProvider).IsAssignableFrom(p) && !p.IsInterface && p != typeof(CallbackProvider)) 
                     .Select(x => Expression.Lambda<Func<ILuaApiProvider>>(Expression.New(x)).Compile()());
         }
 
