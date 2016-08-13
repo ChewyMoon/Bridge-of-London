@@ -16,31 +16,50 @@
         #region Public Methods and Operators
 
         /// <summary>
-        /// Converts the <see cref="Vector3"/> into a <see cref="LuaVector"/>.
+        /// Converts the <see cref="Vector3"/> into a <see cref="LuaVector3"/>.
         /// </summary>
         /// <param name="vector">The vector.</param>
         /// <returns></returns>
-        public static LuaVector ToLuaVector(this Vector3 vector)
+        public static LuaVector3 ToLuaVector3(this Vector3 vector)
         {
-            return new LuaVector(vector);
+            return new LuaVector3(vector);
         }
 
         #endregion
     }
 
+    /// <summary>
+    /// Provides extensions fo the <see cref="Vector1"/> class.
+    /// </summary>
+    public static class Vector2Extension
+    {
+        #region Public Methods and Operators
+
+        /// <summary>
+        /// Converts the <see cref="Vector2"/> into a <see cref="LuaVector2"/>.
+        /// </summary>
+        /// <param name="vector">The vector.</param>
+        /// <returns></returns>
+        public static LuaVector2 ToLuaVector2(this Vector2 vector)
+        {
+            return new LuaVector2(vector);
+        }
+
+        #endregion
+    }
 
     /// <summary>
     /// A Lua implemenation of a <see cref="Vector3"/>. Y and Z is switched.
     /// </summary>
     [MoonSharpUserData]
-    public class LuaVector
+    public class LuaVector3
     {
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LuaVector"/> class.
+        /// Initializes a new instance of the <see cref="LuaVector3"/> class.
         /// </summary>
-        public LuaVector()
+        public LuaVector3()
         {
             this.x = 0;
             this.y = 0;
@@ -48,12 +67,12 @@
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LuaVector"/> class.
+        /// Initializes a new instance of the <see cref="LuaVector3"/> class.
         /// </summary>
         /// <param name="x0">The x0.</param>
         /// <param name="y0">The y0.</param>
         /// <param name="z0">The z0.</param>
-        public LuaVector(float x0, float y0, float z0)
+        public LuaVector3(float x0, float y0, float z0)
         {
             this.x = x0;
             this.x = y0;
@@ -61,10 +80,10 @@
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LuaVector"/> class.
+        /// Initializes a new instance of the <see cref="LuaVector3"/> class.
         /// </summary>
         /// <param name="v">The v.</param>
-        public LuaVector(Vector3 v)
+        public LuaVector3(Vector3 v)
             : this(v.X, v.Z, v.Y)
         {
         }
@@ -103,9 +122,9 @@
         /// Clones this instance.
         /// </summary>
         /// <returns></returns>
-        public LuaVector clone()
+        public LuaVector3 clone()
         {
-            return new LuaVector(this.x, this.y, this.z);
+            return new LuaVector3(this.x, this.y, this.z);
         }
 
         /// <summary>
@@ -113,7 +132,7 @@
         /// </summary>
         /// <param name="v">The vector.</param>
         /// <returns></returns>
-        public double dist(LuaVector v)
+        public double dist(LuaVector3 v)
         {
             var dx = this.x - v.x;
             var dy = this.y - v.y;
@@ -154,9 +173,9 @@
         /// Creates a clone of this instance, normalizes it, then returns it.
         /// </summary>
         /// <returns></returns>
-        public LuaVector normalized()
+        public LuaVector3 normalized()
         {
-            return this.ToVector3().Normalized().ToLuaVector();
+            return this.ToVector3().Normalized().ToLuaVector3();
         }
 
         /// <summary>
@@ -178,5 +197,41 @@
         }
 
         #endregion
+    }
+
+    public class LuaVector2
+    {
+        private Vector2 vector;
+
+        #region Constructors and Destructors
+
+        public LuaVector2()
+        {
+            vector = new Vector2();
+        }
+
+        public LuaVector2(float x, float y)
+        {
+            vector = new Vector2(x, y);
+        }
+
+        public LuaVector2(Vector2 v) : this(v.X, v.Y) //Copy instead of refering it
+        {
+        }
+
+        #endregion
+
+
+        [MoonSharpHidden]
+        public Vector2 GetVector2()
+        {
+            return vector;
+        }
+
+        [MoonSharpHidden]
+        public void SetVector2(Vector2 v)
+        {
+            vector = v;
+        }
     }
 }

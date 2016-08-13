@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
+using BridgeOfLondon.Core.Wrappers;
 using LeagueSharp;
 using MoonSharp.Interpreter;
 using SharpDX;
@@ -21,12 +18,26 @@ namespace BridgeOfLondon.Core.API
             script.Globals["DrawLine"] = (Action<float,float,float,float,float,Color>)this.DrawLine;
             script.Globals["DrawRectangle"] = (Action<float,float,float,float,Color>)this.DrawRectangle;
             script.Globals["DrawCircle"] = (Action<float,float,float,float,int>)this.DrawCircle;
+            script.Globals["WorldToScreen"] = (Func<LuaVector3, LuaVector2>) this.WorldToScreen;
+            script.Globals["ScreenToWorld"] = (Func<LuaVector2, LuaVector3>) this.ScreenToWorld;
+            script.Globals["D3DXVECTOR3"] = (Func<float, float, float, LuaVector3>) this.LuaVector3Wrapper;
+            script.Globals["D3DXVECTOR2"] = (Func<float, float, LuaVector2>) this.LuaVector2Wrapper;
         }
 
         //TODO:
         //Handle OnReset
         public void HookEvents()
         {
+        }
+
+        public LuaVector2 WorldToScreen(LuaVector3 v)
+        {
+            return Drawing.WorldToScreen(v.ToVector3()).ToLuaVector2();
+        }
+
+        public LuaVector3 ScreenToWorld(LuaVector2 v)
+        {
+            return Drawing.ScreenToWorld(v.GetVector2()).ToLuaVector3();
         }
 
         public void DrawText(string text, int size, float x, float y, Color color)
@@ -48,6 +59,15 @@ namespace BridgeOfLondon.Core.API
         {
             Drawing.DrawCircle(new Vector3(x,z,y), size, Color.FromArgb(color) );
         }
-               
+
+        public LuaVector3 LuaVector3Wrapper(float x, float y, float z)
+        {
+            return new LuaVector3(x, y ,z);
+        }
+
+        public LuaVector2 LuaVector2Wrapper(float x, float y)
+        {
+            return new LuaVector2(x, y);
+        }
     }
 }

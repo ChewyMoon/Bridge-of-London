@@ -452,7 +452,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     The maximum bounding box.
         /// </value>
-        public LuaVector maxBBox => this.gameObject.BBox.Maximum.ToLuaVector();
+        public LuaVector3 maxBBox => this.gameObject.BBox.Maximum.ToLuaVector3();
 
         /// <summary>
         ///     Gets the maximum health.
@@ -476,7 +476,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     The minimum bounding box.
         /// </value>
-        public LuaVector minBBox => this.gameObject.BBox.Minimum.ToLuaVector();
+        public LuaVector3 minBBox => this.gameObject.BBox.Minimum.ToLuaVector3();
 
         /// <summary>
         ///     Gets the mana regen.
@@ -524,7 +524,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     The position.
         /// </value>
-        public LuaVector pos => this.gameObject.Position.ToLuaVector();
+        public LuaVector3 pos => this.gameObject.Position.ToLuaVector3();
 
         /// <summary>
         ///     Gets the range.
