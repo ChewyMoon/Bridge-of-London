@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="Core\API\Callbacks\CallbackProvider.cs" />
     <Compile Include="Core\API\Callbacks\CreateObjectCallback.cs" />
+    <Compile Include="Core\API\Callbacks\DeleteObjectCallback.cs" />
     <Compile Include="Core\API\Callbacks\DrawCallback.cs" />
     <Compile Include="Core\API\Callbacks\LoadCallback.cs" />
     <Compile Include="Core\API\Callbacks\TickCallback.cs" />

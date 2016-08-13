@@ -20,7 +20,8 @@
             script.Globals["AddLoadCallback"] = (Action<Closure>)this.AddLoadCallback;
             script.Globals["AddTickCallback"] = (Action<Closure>)this.AddTickCallback;
             script.Globals["AddDrawCallback"] = (Action<Closure>)this.AddDrawCallback;
-            script.Globals["AddCreateObjCallback"] = (Action<Closure>) this.CreateObjectCallback;
+            script.Globals["AddCreateObjCallback"] = (Action<Closure>) this.AddCreateObjectCallback;
+            script.Globals["AddDeleteObjCallback"] = (Action<Closure>) this.AddDeleteObjectCallback;
         }
 
         /// <summary>
@@ -32,6 +33,7 @@
             Game.OnUpdate += this.GameOnUpdate;
             Drawing.OnDraw += this.DrawingOnDraw;
             GameObject.OnCreate += this.OnCreateObject;
+            GameObject.OnDelete += this.OnDeleteObject;
         }
 
         public void RegisterStandardCalls(Script script)
@@ -49,6 +51,9 @@
                     //Console.WriteLine(pair2.Key + " " + pair2.Value.Type);
                     switch (pair2.Key.String)
                     {
+                        case "OnLoad":
+                            AddLoadCallback(pair2.Value.Function);
+                            break;
                         case "OnTick":
                             AddTickCallback(pair2.Value.Function);
                             break;

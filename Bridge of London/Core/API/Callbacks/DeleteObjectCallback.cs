@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BridgeOfLondon.Core.Wrappers;
 using LeagueSharp;
 using MoonSharp.Interpreter;
@@ -14,39 +11,39 @@ namespace BridgeOfLondon.Core.API.Callbacks
         #region Properties
 
         /// <summary>
-        /// The event that raises OnTick Callbacks
+        ///     The event that raises OnTick Callbacks
         /// </summary>
-        private event ScriptFunctionDelegate CreateObjectCallbacks;
+        private event ScriptFunctionDelegate DeleteObjectCallbacks;
+
         #endregion
 
         #region Public Methods and Operators
-
 
         /// <summary>
         ///     Adds the tick callback.
         /// </summary>
         /// <param name="func">The function.</param>
-        public void AddCreateObjectCallback(Closure func)
+        public void AddDeleteObjectCallback(Closure func)
         {
-            CreateObjectCallbacks += func.GetDelegate();
+            DeleteObjectCallbacks += func.GetDelegate();
         }
 
         /// <summary>
-        /// Fired when a game object is created.
+        ///     Fired when a game object is Deleted.
         /// </summary>
-        /// <param name="args">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private void OnCreateObject(GameObject sender, EventArgs args)
+        /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
+        private void OnDeleteObject(GameObject sender, EventArgs args)
         {
-            if (CreateObjectCallbacks == null)
+            if (DeleteObjectCallbacks == null)
             {
                 return;
             }
             var luaSender = sender.ToLuaGameUnit();
-            foreach (Delegate d in CreateObjectCallbacks.GetInvocationList().ToArray())
+            foreach (var d in DeleteObjectCallbacks.GetInvocationList().ToArray())
             {
                 try
                 {
-                    ((ScriptFunctionDelegate)d)(luaSender);
+                    ((ScriptFunctionDelegate) d)(luaSender);
                 }
                 catch (Exception e)
                 {
@@ -54,6 +51,7 @@ namespace BridgeOfLondon.Core.API.Callbacks
                 }
             }
         }
+
         #endregion
     }
 }
