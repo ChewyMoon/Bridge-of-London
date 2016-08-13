@@ -18,16 +18,9 @@ namespace BridgeOfLondon.Core.API.Globals
         {
             //TODO:
             //Do it properly without OnUpdate?
-            Game.OnUpdate += args =>
-            {
-                var cursor = Game.CursorPos;
-                mousePos.x = cursor.X;
-                mousePos.y = cursor.Z;
-                mousePos.z = cursor.Y;
-            };
+            Game.OnUpdate += UpdateMousePos;
         }
 
-        
         private void AddChatApi(Script script)
         {
             script.Globals["PrintChat"] = (Action<string, object[]>) Game.PrintChat;
@@ -35,6 +28,7 @@ namespace BridgeOfLondon.Core.API.Globals
             //BlockChat() missing
         }
 
+        #region General Api
         public LuaVector3 mousePos => Game.CursorPos.ToLuaVector3();
 
         private void GeneralApi(Script script)
@@ -45,10 +39,17 @@ namespace BridgeOfLondon.Core.API.Globals
             script.Globals["GetLatency"] = new Func<float>(() => Game.Ping);
             script.Globals["GetTarget"] = new Func<LuaGameObject>(() => TargetSelector.GetSelectedTarget().ToLuaGameObject());
         }
-
+        private void UpdateMousePos(EventArgs args)
+        {
+            var cursor = Game.CursorPos;
+            mousePos.x = cursor.X;
+            mousePos.y = cursor.Z;
+            mousePos.z = cursor.Y;
+        }
         private Obj_AI_Hero GetMyHero()
         {
             return ObjectManager.Player;
-        }
+        } 
+        #endregion
     }
 }

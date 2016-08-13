@@ -725,6 +725,15 @@ namespace BridgeOfLondon.Core.Wrappers
                    && this.asAiBase.IssueOrder(GameObjectOrder.MoveTo, new Vector2(x,z).To3D2());
         }
 
+        /// <summary>
+        /// Gets the wrapped <see cref="GameObject" />
+        /// </summary>
+        /// <returns></returns>
+        [MoonSharpHidden]
+        public GameObject GetGameObject()
+        {
+            return gameObject;
+        }
         #endregion
 
         #region Methods
