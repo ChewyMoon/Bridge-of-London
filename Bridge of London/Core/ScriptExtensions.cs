@@ -19,13 +19,17 @@ namespace BridgeOfLondon.Core
                 script.Globals["Environments"] = envTable;
             }
 
-            var luaScriptEnv = envTable[envName];
+            var luaScriptEnv = (Table)envTable[envName];
+            
             if (luaScriptEnv == null)
             {
-                envTable[envName] = new Table(script);
+                luaScriptEnv = new Table(script);
+                luaScriptEnv.MetaTable = new Table(script);
+                luaScriptEnv.MetaTable["__index"] = script.Globals;
+                envTable[envName] = luaScriptEnv;
             }
 
-            return (Table)envTable[envName];
+            return luaScriptEnv;
         }
     }
 }
