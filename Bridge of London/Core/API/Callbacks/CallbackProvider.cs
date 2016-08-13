@@ -27,11 +27,10 @@
         /// </summary>
         public void HookEvents()
         {
-            LeagueSharp.Common.CustomEvents.Game.OnGameLoad += this.GameOnGameLoad;
-            LeagueSharp.Game.OnUpdate += this.GameOnUpdate;
-            LeagueSharp.GameObject.OnCreate += this.OnCreateObject;
             CustomEvents.Game.OnGameLoad += this.GameOnGameLoad;
             Game.OnUpdate += this.GameOnUpdate;
+            GameObject.OnCreate += this.OnCreateObject;
+
         }
 
         #endregion
