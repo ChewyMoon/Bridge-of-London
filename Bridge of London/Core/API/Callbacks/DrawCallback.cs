@@ -35,7 +35,7 @@
         ///     Fired when the game is updated.
         /// </summary>
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
-        private void GameOnDraw(EventArgs args)
+        private void DrawingOnDraw(EventArgs args)
         {
             if (this.DrawCallbacks == null)
             {
