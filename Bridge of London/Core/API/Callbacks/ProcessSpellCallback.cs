@@ -1,4 +1,7 @@
-﻿namespace BridgeOfLondon.Core.API.Callbacks
+﻿using BridgeOfLondon.Core.Wrappers;
+using LeagueSharp;
+
+namespace BridgeOfLondon.Core.API.Callbacks
 {
     using System;
     using System.Linq;
@@ -12,7 +15,7 @@
         /// <summary>
         ///     The event that raises OnLoad Callbacks
         /// </summary>
-        private event ScriptFunctionDelegate LoadCallbacks;
+        private event ScriptFunctionDelegate ProcessSpellCallback;
 
         #endregion
 
@@ -22,9 +25,9 @@
         ///     Adds the load callback.
         /// </summary>
         /// <param name="func">The function.</param>
-        public void AddLoadCallback(Closure func)
+        public void AddProcessSpellCallback(Closure func)
         {
-            this.LoadCallbacks += func.GetDelegate();
+            this.ProcessSpellCallback += func.GetDelegate();
         }
 
         #endregion
@@ -32,21 +35,22 @@
         #region Methods
 
         /// <summary>
-        ///     Fired when the game is Loaded.
+        ///     Fired when the game is updated.
         /// </summary>
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
-        private void GameOnGameLoad(EventArgs args)
+        private void ObjAiBaseOnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            if (this.LoadCallbacks == null)
+            if (this.ProcessSpellCallback == null)
             {
                 return;
             }
-
-            foreach (var d in this.LoadCallbacks.GetInvocationList().ToArray())
+            var luaUnit = sender.ToLuaGameObject();
+            var luaSpell = args.ToLua();
+            foreach (var d in this.ProcessSpellCallback.GetInvocationList().ToArray())
             {
                 try
                 {
-                    ((ScriptFunctionDelegate)d)();
+                    ((ScriptFunctionDelegate)d)(luaUnit, luaSpell);
                 }
                 catch (Exception e)
                 {

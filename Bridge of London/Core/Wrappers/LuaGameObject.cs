@@ -20,7 +20,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// </summary>
         /// <param name="objBase">The object base.</param>
         /// <returns></returns>
-        public static LuaGameObject ToLuaGameUnit(this GameObject objBase)
+        public static LuaGameObject ToLuaGameObject(this GameObject objBase)
         {
             return new LuaGameObject(objBase);
         }

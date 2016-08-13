@@ -23,7 +23,7 @@
         public void AddApi(Script script)
         {
             script.Globals["heroManager"] = new HeroManagerImpl();
-            script.Globals["myHero"] = ObjectManager.Player.ToLuaGameUnit();
+            script.Globals["myHero"] = ObjectManager.Player.ToLuaGameObject();
         }
 
         /// <summary>

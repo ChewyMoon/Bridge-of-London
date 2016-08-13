@@ -65,6 +65,7 @@
     <Compile Include="Core\API\Callbacks\DeleteObjectCallback.cs" />
     <Compile Include="Core\API\Callbacks\DrawCallback.cs" />
     <Compile Include="Core\API\Callbacks\LoadCallback.cs" />
+    <Compile Include="Core\API\Callbacks\ProcessSpellCallback.cs" />
     <Compile Include="Core\API\Callbacks\TickCallback.cs" />
     <Compile Include="Core\API\Drawings.cs" />
     <Compile Include="Core\API\Managers\HeroManager.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="Core\Wrappers\Buff.cs" />
     <Compile Include="Core\Wrappers\LuaGameObject.cs" />
     <Compile Include="Core\Wrappers\LuaItem.cs" />
+    <Compile Include="Core\Wrappers\LuaProcessSpellCastArg.cs" />
     <Compile Include="Core\Wrappers\Spell.cs" />
     <Compile Include="Core\API\Globals\Constants.cs" />
     <Compile Include="Core\Wrappers\LuaVector.cs" />

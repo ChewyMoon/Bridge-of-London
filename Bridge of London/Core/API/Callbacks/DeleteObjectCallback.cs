@@ -38,7 +38,7 @@ namespace BridgeOfLondon.Core.API.Callbacks
             {
                 return;
             }
-            var luaSender = sender.ToLuaGameUnit();
+            var luaSender = sender.ToLuaGameObject();
             foreach (var d in DeleteObjectCallbacks.GetInvocationList().ToArray())
             {
                 try
