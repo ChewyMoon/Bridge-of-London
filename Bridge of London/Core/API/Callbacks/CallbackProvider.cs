@@ -1,11 +1,16 @@
-﻿using System;
-using MoonSharp.Interpreter;
-
-namespace BridgeOfLondon.Core.API.Callbacks
+﻿namespace BridgeOfLondon.Core.API.Callbacks
 {
+    using System;
+
+    using LeagueSharp;
+    using LeagueSharp.Common;
+
+    using MoonSharp.Interpreter;
 
     internal partial class CallbackProvider : ILuaApiProvider
     {
+        #region Public Methods and Operators
+
         /// <summary>
         ///     Adds the API.
         /// </summary>
@@ -21,8 +26,10 @@ namespace BridgeOfLondon.Core.API.Callbacks
         /// </summary>
         public void HookEvents()
         {
-            LeagueSharp.Common.CustomEvents.Game.OnGameLoad += this.GameOnGameLoad;
-            LeagueSharp.Game.OnUpdate += this.GameOnUpdate;
+            CustomEvents.Game.OnGameLoad += this.GameOnGameLoad;
+            Game.OnUpdate += this.GameOnUpdate;
         }
+
+        #endregion
     }
 }

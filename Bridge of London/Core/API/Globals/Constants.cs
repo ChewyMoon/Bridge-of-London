@@ -3,6 +3,7 @@
     using System;
 
     using LeagueSharp;
+    using LeagueSharp.Common;
 
     using MoonSharp.Interpreter;
 
@@ -122,12 +123,18 @@
         }
 
         /// <summary>
-        ///     TODO:
-        ///     Check values of GameOnOnWndProc
+        /// Registers the codes that the window will process.
         /// </summary>
-        /// <param name="script"></param>
+        /// <param name="script">The script.</param>
         private void RegisterWndProc(Script script)
         {
+            script.Globals["KEY_DOWN"] = 0x100;
+            script.Globals["KEY_UP"] = 0x101;
+            script.Globals["WM_MOUSEMOVE"] = 0x200;
+            script.Globals["WM_LBUTTONDOWN"] = 0x201;
+            script.Globals["WM_LBUTTONUP"] = 0x202;
+            script.Globals["WM_RBUTTONDOWN"] = 0x204;
+            script.Globals["WM_RBUTTONUP"] = 0x205;
         }
 
         #endregion

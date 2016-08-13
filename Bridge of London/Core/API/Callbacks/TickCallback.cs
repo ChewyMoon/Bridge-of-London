@@ -1,27 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BridgeOfLondon.Core.API.Callbacks
+﻿namespace BridgeOfLondon.Core.API.Callbacks
 {
+    using System;
+    using System.Linq;
+
     using MoonSharp.Interpreter;
-    using LeagueSharp;
 
     internal partial class CallbackProvider
     {
-        #region Properties
+        #region Events
 
         /// <summary>
-        /// The event that raises OnTick Callbacks
+        ///     The event that raises OnTick Callbacks
         /// </summary>
         private event ScriptFunctionDelegate TickCallbacks;
+
         #endregion
 
         #region Public Methods and Operators
-
 
         /// <summary>
         ///     Adds the tick callback.
@@ -29,25 +24,29 @@ namespace BridgeOfLondon.Core.API.Callbacks
         /// <param name="func">The function.</param>
         public void AddTickCallback(Closure func)
         {
-            TickCallbacks += func.GetDelegate();
+            this.TickCallbacks += func.GetDelegate();
         }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
-        /// Fired when the game is updated.
+        ///     Fired when the game is updated.
         /// </summary>
-        /// <param name="args">The <see cref="EventArgs"/> instance containing the event data.</param>
+        /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         private void GameOnUpdate(EventArgs args)
         {
-            if (TickCallbacks == null)
+            if (this.TickCallbacks == null)
             {
                 return;
             }
 
-            foreach (Delegate d in TickCallbacks.GetInvocationList().ToArray())
+            foreach (var d in this.TickCallbacks.GetInvocationList().ToArray())
             {
                 try
                 {
-                    ((ScriptFunctionDelegate) d)();
+                    ((ScriptFunctionDelegate)d)();
                 }
                 catch (Exception e)
                 {
@@ -55,6 +54,7 @@ namespace BridgeOfLondon.Core.API.Callbacks
                 }
             }
         }
+
         #endregion
     }
 }

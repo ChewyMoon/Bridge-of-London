@@ -1,24 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MoonSharp.Interpreter;
-
-namespace BridgeOfLondon.Core.API.Callbacks
+﻿namespace BridgeOfLondon.Core.API.Callbacks
 {
+    using System;
+    using System.Linq;
+
+    using MoonSharp.Interpreter;
+
     internal partial class CallbackProvider
     {
-        #region Properties
+        #region Events
 
         /// <summary>
-        /// The event that raises OnLoad Callbacks
+        ///     The event that raises OnLoad Callbacks
         /// </summary>
         private event ScriptFunctionDelegate LoadCallbacks;
+
         #endregion
 
         #region Public Methods and Operators
-
 
         /// <summary>
         ///     Adds the load callback.
@@ -26,39 +24,37 @@ namespace BridgeOfLondon.Core.API.Callbacks
         /// <param name="func">The function.</param>
         public void AddLoadCallback(Closure func)
         {
-            LoadCallbacks += func.GetDelegate();
+            this.LoadCallbacks += func.GetDelegate();
         }
-        #endregion
 
+        #endregion
 
         #region Methods
 
         /// <summary>
-        /// Fired when the game is updated.
+        ///     Fired when the game is updated.
         /// </summary>
-        /// <param name="args">The <see cref="EventArgs"/> instance containing the event data.</param>
+        /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         private void GameOnGameLoad(EventArgs args)
         {
-            if (LoadCallbacks == null)
+            if (this.LoadCallbacks == null)
             {
                 return;
             }
 
-            foreach (Delegate d in LoadCallbacks.GetInvocationList().ToArray())
+            foreach (var d in this.LoadCallbacks.GetInvocationList().ToArray())
             {
                 try
                 {
-                    ((ScriptFunctionDelegate) d)();
+                    ((ScriptFunctionDelegate)d)();
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine();
+                    Console.WriteLine(e);
                 }
             }
         }
 
         #endregion
-
-
     }
 }
