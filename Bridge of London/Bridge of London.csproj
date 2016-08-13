@@ -60,6 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\API\Callbacks\Callback.cs" />
     <Compile Include="Core\API\Callbacks\CallbackProvider.cs" />
     <Compile Include="Core\API\Callbacks\CreateObjectCallback.cs" />
     <Compile Include="Core\API\Callbacks\DeleteObjectCallback.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="Core\API\Callbacks\ProcessSpellCallback.cs" />
     <Compile Include="Core\API\Callbacks\TickCallback.cs" />
     <Compile Include="Core\API\Drawings.cs" />
+    <Compile Include="Core\API\Globals\Utility.cs" />
     <Compile Include="Core\API\Managers\HeroManager.cs" />
     <Compile Include="Core\ScriptExtensions.cs" />
     <Compile Include="Core\Wrappers\Buff.cs" />
