@@ -90,6 +90,9 @@
                 new MenuItem("SandboxLevel", "Sandbox Level").SetValue(
                     new StringList(new[] { "Hard", "Soft", "Default", "Unrestricted" }, 2)));
 
+            this.Menu.AddItem(
+                new MenuItem("ScriptPath", ".lua Script path")).SetTooltip(ScriptDirectory);
+
             this.Menu.AddToMainMenu();
         }
 

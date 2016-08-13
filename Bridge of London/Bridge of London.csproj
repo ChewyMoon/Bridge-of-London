@@ -40,7 +40,7 @@
       <HintPath>C:\Program Files (x86)\P0DEBj1w2\References\LeagueSharp.Common.dll</HintPath>
     </Reference>
     <Reference Include="MoonSharp.Interpreter, Version=1.6.0.0, Culture=neutral, PublicKeyToken=921e73ce94aa17f8, processorArchitecture=MSIL">
-      <HintPath>..\packages\MoonSharp.1.6.0.0\lib\net40-client\MoonSharp.Interpreter.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\P0DEBj1w2\References\MoonSharp.Interpreter.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="SharpDX">
@@ -66,6 +66,7 @@
     <Compile Include="Core\API\Callbacks\TickCallback.cs" />
     <Compile Include="Core\API\Drawings.cs" />
     <Compile Include="Core\API\Managers\HeroManager.cs" />
+    <Compile Include="Core\ScriptExtensions.cs" />
     <Compile Include="Core\Wrappers\Buff.cs" />
     <Compile Include="Core\Wrappers\LuaGameObject.cs" />
     <Compile Include="Core\Wrappers\LuaItem.cs" />

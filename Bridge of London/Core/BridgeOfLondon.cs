@@ -43,6 +43,14 @@
         /// </value>
         public List<Script> Scripts { get; } = new List<Script>();
 
+        /// <summary>
+        ///     Gets or sets the lua virtual machine
+        /// </summary>
+        /// <value>
+        ///     The Lua Virtual Machine
+        /// </value>
+        public Script LuaVM;
+
         #endregion
 
         #region Public Methods and Operators
@@ -55,6 +63,12 @@
         {
             this.Config = new Config();
             this.Config.Load();
+
+            LuaVM = new Script(this.Config.SandboxLevel);
+            LuaApiManager.AddApi(LuaVM);
+
+            ((ScriptLoaderBase)LuaVM.Options.ScriptLoader).ModulePaths = new[] { "Common/?", "Common/?.lua" };
+            ((ScriptLoaderBase)LuaVM.Options.ScriptLoader).IgnoreLuaPathGlobal = true;
 
             this.LoadScripts();
         }
@@ -97,16 +111,10 @@
             {
                 try
                 {
-                    var script = new Script(this.Config.SandboxLevel);
+                    Console.WriteLine($"Loading {luaScript}");
+                    LuaVM.DoFile(luaScript, LuaVM.CreateEnvironment(luaScript));
 
-                    LuaApiManager.AddApi(script);
-
-                    ((ScriptLoaderBase)script.Options.ScriptLoader).ModulePaths = new[] { "Common/?", "Common/?.lua" };
-                    ((ScriptLoaderBase)script.Options.ScriptLoader).IgnoreLuaPathGlobal = true;
-
-                    script.DoFile(luaScript);
-
-                    this.Scripts.Add(script);
+                    //this.Scripts.Add(script);
                 }
                 catch (Exception e)
                 {

@@ -23,7 +23,7 @@
             ApiProviders =
                 Assembly.GetExecutingAssembly()
                     .GetTypes()
-                    .Where(p => typeof(ILuaApiProvider).IsAssignableFrom(p))
+                    .Where(p => typeof(ILuaApiProvider).IsAssignableFrom(p) && !p.IsInterface)
                     .Select(x => Expression.Lambda<Func<ILuaApiProvider>>(Expression.New(x)).Compile()());
         }
 
