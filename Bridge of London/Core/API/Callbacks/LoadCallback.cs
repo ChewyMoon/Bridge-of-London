@@ -27,11 +27,8 @@
             this.LoadCallbacks += func.GetDelegate();
         }
 
-<<<<<<< HEAD
-=======
         #endregion
 
->>>>>>> origin/master
         #region Methods
 
         /// <summary>
