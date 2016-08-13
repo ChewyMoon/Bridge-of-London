@@ -64,11 +64,35 @@
             this.Config = new Config();
             this.Config.Load();
 
-            LuaVM = new Script(this.Config.SandboxLevel);
-            LuaApiManager.AddApi(LuaVM);
 
-            ((ScriptLoaderBase)LuaVM.Options.ScriptLoader).ModulePaths = new[] { "Common/?", "Common/?.lua" };
-            ((ScriptLoaderBase)LuaVM.Options.ScriptLoader).IgnoreLuaPathGlobal = true;
+
+            try
+            {
+                Script.WarmUp();
+                UserData.RegisterAssembly(Assembly.GetExecutingAssembly());
+
+                LuaVM = new Script(this.Config.SandboxLevel);
+
+                ((ScriptLoaderBase)LuaVM.Options.ScriptLoader).ModulePaths = new[] { "Common/?", "Common/?.lua" };
+                ((ScriptLoaderBase)LuaVM.Options.ScriptLoader).IgnoreLuaPathGlobal = true;
+            }
+            catch (Exception e)
+            {
+                PrintMessage("Failed to create Lua Virtual Machine. See Console for details");
+                Console.WriteLine(e);
+                return;
+            }
+
+            try
+            {
+                LuaApiManager.AddApi(LuaVM);
+            }
+            catch (Exception e)
+            {
+                PrintMessage("Failed to register API. See Console for details");
+                Console.WriteLine(e);
+                return;
+            }
 
             this.LoadScripts();
         }
@@ -103,9 +127,6 @@
             {
                 Directory.CreateDirectory(this.Config.LibraryDirectory);
             }
-
-            Script.WarmUp();
-            UserData.RegisterAssembly(Assembly.GetExecutingAssembly());
 
             foreach (var luaScript in Directory.GetFiles(this.Config.ScriptDirectory))
             {
