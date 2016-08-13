@@ -9,49 +9,52 @@ namespace BridgeOfLondon.Core.Wrappers
     using SharpDX;
 
     /// <summary>
-    ///     Provides extensions to the <see cref="Obj_AI_Base" /> class.
+    ///     Provides extensions to the <see cref="GameObject" /> class.
     /// </summary>
-    public static class Obj_Ai_BaseExtension
+    public static class GameObjectExtensions
     {
         #region Public Methods and Operators
 
         /// <summary>
-        ///     Converts the <see cref="Obj_AI_Base" /> to a Lua <see cref="GameUnit" />;
+        ///     Converts the <see cref="GameObject" /> to a Lua <see cref="LuaGameObject" />;
         /// </summary>
         /// <param name="objBase">The object base.</param>
         /// <returns></returns>
-        public static GameUnit ToLuaGameUnit(this Obj_AI_Base objBase)
+        public static LuaGameObject ToLuaGameUnit(this GameObject objBase)
         {
-            return new GameUnit(objBase);
+            return new LuaGameObject(objBase);
         }
 
         #endregion
     }
 
     /// <summary>
-    ///     A Lua wrapper over an <see cref="Obj_AI_Base" />.
+    ///     A Lua wrapper over a <see cref="GameObject" />.
     /// </summary>
     [MoonSharpUserData]
-    public class GameUnit
+    public class LuaGameObject
     {
         #region Fields
 
         /// <summary>
-        ///     The unit
+        ///     The gameObject
         /// </summary>
-        private readonly Obj_AI_Base unit;
+        private readonly GameObject gameObject;
+
+        private readonly Obj_AI_Base asAiBase;
 
         #endregion
 
         #region Constructors and Destructors
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="GameUnit" /> class.
+        ///     Initializes a new instance of the <see cref="LuaGameObject" /> class.
         /// </summary>
         /// <param name="objBase">The object base.</param>
-        public GameUnit(Obj_AI_Base objBase)
+        public LuaGameObject(GameObject objBase)
         {
-            this.unit = objBase;
+            this.gameObject = objBase;
+            this.asAiBase = objBase as Obj_AI_Base;
         }
 
         #endregion
@@ -69,7 +72,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     The ap.
         /// </value>
-        public float ap => this.unit.TotalMagicalDamage;
+        public float? ap => this.asAiBase?.TotalMagicalDamage;
 
         /// <summary>
         ///     Gets the armor.
@@ -77,7 +80,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     The armor.
         /// </value>
-        public float armor => this.unit.Armor;
+        public float? armor => this.asAiBase?.Armor;
 
         /// <summary>
         ///     Gets the armor material.
@@ -85,7 +88,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     The armor material.
         /// </value>
-        public string armorMaterial => this.unit.ArmorMaterial;
+        public string armorMaterial => this.asAiBase?.ArmorMaterial;
 
         /// <summary>
         ///     Gets the armor pen.
@@ -93,7 +96,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     The armor pen.
         /// </value>
-        public float armorPen => this.unit.FlatArmorPenetrationMod;
+        public float? armorPen => this.asAiBase?.FlatArmorPenetrationMod;
 
         /// <summary>
         ///     Gets the armor pen percent.
@@ -101,7 +104,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     The armor pen percent.
         /// </value>
-        public float armorPenPercent => this.unit.PercentArmorPenetrationMod;
+        public float? armorPenPercent => this.asAiBase?.PercentArmorPenetrationMod;
 
         /// <summary>
         ///     Gets the attack speed.
@@ -109,71 +112,71 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     The attack speed.
         /// </value>
-        public float attackSpeed => this.unit.AttackSpeedMod;
+        public float? attackSpeed => this.asAiBase?.AttackSpeedMod;
 
         /// <summary>
-        ///     Gets a value indicating whether the unit is invulnerable.
+        ///     Gets a value indicating whether the gameObject is invulnerable.
         /// </summary>
         /// <value>
-        ///     <c>true</c> if the unit is invulnerable; otherwise, <c>false</c>.
+        ///     <c>true</c> if the gameObject is invulnerable; otherwise, <c>false</c>.
         /// </value>
-        public bool bInvulnerable => this.unit.IsInvulnerable;
+        public bool? bInvulnerable => this.asAiBase?.IsInvulnerable;
 
         /// <summary>
-        ///     Gets a value indicating whether the unit is magic imune.
+        ///     Gets a value indicating whether the gameObject is magic imune.
         /// </summary>
         /// <value>
-        ///     <c>true</c> if the unit is magic imune; otherwise, <c>false</c>.
+        ///     <c>true</c> if the gameObject is magic imune; otherwise, <c>false</c>.
         /// </value>
-        public bool bMagicImune => this.unit.MagicImmune;
+        public bool? bMagicImune => this.asAiBase?.MagicImmune;
 
         /// <summary>
-        ///     Gets a value indicating whether the unit is physical imune.
+        ///     Gets a value indicating whether the gameObject is physical imune.
         /// </summary>
         /// <value>
-        ///     <c>true</c> if the unit is physical imune; otherwise, <c>false</c>.
+        ///     <c>true</c> if the gameObject is physical imune; otherwise, <c>false</c>.
         /// </value>
-        public bool bPhysImune => this.unit.PhysicalImmune;
+        public bool? bPhysImune => this.asAiBase?.PhysicalImmune;
 
         /// <summary>
-        ///     Gets a value indicating whether the unit is targetable.
+        ///     Gets a value indicating whether the gameObject is targetable.
         /// </summary>
         /// <value>
-        ///     <c>true</c> if the unit istargetable; otherwise, <c>false</c>.
+        ///     <c>true</c> if the gameObject istargetable; otherwise, <c>false</c>.
         /// </value>
-        public bool bTargetable => this.unit.IsTargetable;
+        public bool? bTargetable => this.asAiBase?.IsTargetable;
 
         /// <summary>
-        ///     Gets a value indicating whether the unit is targetable to team. This implemenation is more than likely not correct.
+        ///     Gets a value indicating whether the gameObject is targetable to team. This implemenation is more than likely not correct.
         /// </summary>
         /// <value>
-        ///     <c>true</c> if the unit is targetable to team; otherwise, <c>false</c>.
+        ///     <c>true</c> if the gameObject is targetable to team; otherwise, <c>false</c>.
         /// </value>
-        public bool bTargetableToTeam => this.unit.IsTargetable;
+        public bool? bTargetableToTeam => this.asAiBase?.IsTargetable;
 
         /// <summary>
-        ///     Gets the number of buffs applied to the unit
+        ///     Gets the number of buffs applied to the gameObject
         /// </summary>
         /// <value>
         ///     The buff count.
         /// </value>
-        public int buffCount => this.unit.Buffs.Length;
+        public int? buffCount => this.asAiBase?.Buffs.Length;
 
         /// <summary>
-        ///     Gets a value indicating whether this unit can attack.
+        ///     Gets a value indicating whether this gameObject can attack.
         /// </summary>
         /// <value>
-        ///     <c>true</c> if this unit can attack; otherwise, <c>false</c>.
+        ///     <c>true</c> if this gameObject can attack; otherwise, <c>false</c>.
         /// </value>
-        public bool canAttack => this.unit.CanAttack;
+        public bool? canAttack => this.asAiBase?.CanAttack;
 
         /// <summary>
-        ///     Gets a value indicating whether this unit can move.
+        ///     Gets a value indicating whether this gameObject can move.
         /// </summary>
         /// <value>
-        ///     <c>true</c> if this unit can move; otherwise, <c>false</c>.
+        ///     <c>true</c> if this gameObject can move; otherwise, <c>false</c>.
         /// </value>
-        public bool canMove => this.unit.CanMove;
+        public bool? canMove => this.asAiBase?.CanMove;
 
         /// <summary>
         ///     Gets the cool down reduction of the champion.
@@ -181,20 +184,20 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     The cool down reduction.
         /// </value>
-        public float cdr => this.unit.FlatCooldownMod;
+        public float? cdr => this.asAiBase?.FlatCooldownMod;
 
         /// <summary>
-        ///     Gets the charName of the unit. Honestly dunno what this is....
+        ///     Gets the charName of the gameObject. Honestly dunno what this is....
         /// </summary>
-        public string charName => this.unit.CharData.BaseSkinName;
+        public string charName => this.asAiBase?.CharData.BaseSkinName;
 
         /// <summary>
-        ///     Gets a value indicating whether this <see cref="GameUnit" /> is controlled.
+        ///     Gets a value indicating whether this <see cref="LuaGameObject" /> is controlled.
         /// </summary>
         /// <value>
         ///     <c>true</c> if controlled; otherwise, <c>false</c>.
         /// </value>
-        public bool controlled => this.unit.PlayerControlled;
+        public bool? controlled => this.asAiBase?.PlayerControlled;
 
         /// <summary>
         ///     Gets the crit chance.
@@ -202,7 +205,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     The crit chance.
         /// </value>
-        public float critChance => this.unit.FlatCritChanceMod;
+        public float? critChance => this.asAiBase?.FlatCritChanceMod;
 
         /// <summary>
         ///     Gets the crit damage.
@@ -210,7 +213,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     The crit damage.
         /// </value>
-        public float critDmg => this.unit.FlatCritDamageMod;
+        public float? critDmg => this.asAiBase?.FlatCritDamageMod;
 
         /// <summary>
         ///     Gets the damage.
@@ -218,15 +221,15 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     The damage.
         /// </value>
-        public float damage => this.unit.TotalAttackDamage;
+        public float? damage => this.asAiBase?.TotalAttackDamage;
 
         /// <summary>
-        ///     Gets a value indicating whether this <see cref="GameUnit" /> is dead.
+        ///     Gets a value indicating whether this <see cref="LuaGameObject" /> is dead.
         /// </summary>
         /// <value>
         ///     <c>true</c> if dead; otherwise, <c>false</c>.
         /// </value>
-        public bool dead => this.unit.IsDead;
+        public bool? dead => this.gameObject.IsDead;
 
         /// <summary>
         ///     Gets the death timer.
@@ -234,7 +237,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     The death timer.
         /// </value>
-        public float deathTimer => this.unit.DeathDuration;
+        public float? deathTimer => this.asAiBase?.DeathDuration;
 
         /// <summary>
         ///     Gets the experience bonus.
@@ -242,7 +245,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     The experience bonus.
         /// </value>
-        public float expBonus => this.unit.PercentEXPBonus;
+        public float? expBonus => this.asAiBase?.PercentEXPBonus;
 
         /// <summary>
         ///     Gets the gold.
@@ -250,12 +253,12 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     The gold.
         /// </value>
-        public float gold => this.unit.Gold;
+        public float? gold => this.asAiBase?.Gold;
 
         /// <summary>
         ///     TODO
         /// </summary>
-        public float hardness => 0f;
+        public float? hardness => 0f;
 
         /// <summary>
         ///     Gets the health.
@@ -263,23 +266,23 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     The health.
         /// </value>
-        public float health => this.unit.Health;
+        public float? health => this.asAiBase?.Health;
 
         /// <summary>
-        ///     Gets the health point pool.
+        ///     Gets the health point? pool.
         /// </summary>
         /// <value>
-        ///     The health point pool.
+        ///     The health point? pool.
         /// </value>
-        public float hpPool => this.unit.FlatHPPoolMod;
+        public float? hpPool => this.asAiBase?.FlatHPPoolMod;
 
         /// <summary>
-        ///     Gets the health point regen.
+        ///     Gets the health point? regen.
         /// </summary>
         /// <value>
-        ///     The health point regen.
+        ///     The health point? regen.
         /// </value>
-        public float hpRegen => this.unit.HPRegenRate;
+        public float? hpRegen => this.asAiBase?.HPRegenRate;
 
         /// <summary>
         ///     Gets a value indicating whether this instance is an AI. This implemenation may not be correct.
@@ -287,7 +290,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     <c>true</c> if this instance is an AI; otherwise, <c>false</c>.
         /// </value>
-        public bool isAi => !this.unit.PlayerControlled;
+        public bool? isAi => !this.asAiBase?.PlayerControlled;
 
         /// <summary>
         ///     Gets a value indicating whether this instance is asleep.
@@ -295,7 +298,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     <c>true</c> if this instance is asleep; otherwise, <c>false</c>.
         /// </value>
-        public bool isAsleep => this.unit.CharacterState.HasFlag(GameObjectCharacterState.Asleep);
+        public bool? isAsleep => this.asAiBase?.CharacterState.HasFlag(GameObjectCharacterState.Asleep);
 
         /// <summary>
         ///     Gets a value indicating whether this instance is charmed.
@@ -303,7 +306,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     <c>true</c> if this instance is charmed; otherwise, <c>false</c>.
         /// </value>
-        public bool isCharmed => this.unit.IsCharmed;
+        public bool? isCharmed => this.asAiBase?.IsCharmed;
 
         /// <summary>
         ///     Gets a value indicating whether this instance is feared.
@@ -311,7 +314,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     <c>true</c> if this instance is feared; otherwise, <c>false</c>.
         /// </value>
-        public bool isFeared => this.unit.CharacterState.HasFlag(GameObjectCharacterState.Feared);
+        public bool? isFeared => this.asAiBase?.CharacterState.HasFlag(GameObjectCharacterState.Feared);
 
         /// <summary>
         ///     Gets a value indicating whether this instance is fleeing.
@@ -319,7 +322,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     <c>true</c> if this instance is fleeing; otherwise, <c>false</c>.
         /// </value>
-        public bool isFleeing => this.unit.CharacterState.HasFlag(GameObjectCharacterState.Fleeing);
+        public bool? isFleeing => this.asAiBase?.CharacterState.HasFlag(GameObjectCharacterState.Fleeing);
 
         /// <summary>
         ///     Gets a value indicating whether this instance is force render particles.
@@ -327,8 +330,8 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     <c>true</c> if this instance is force render particles; otherwise, <c>false</c>.
         /// </value>
-        public bool isForceRenderParticles
-            => this.unit.CharacterState.HasFlag(GameObjectCharacterState.ForceRenderParticles);
+        public bool? isForceRenderParticles
+            => this.asAiBase?.CharacterState.HasFlag(GameObjectCharacterState.ForceRenderParticles);
 
         /// <summary>
         ///     Gets a value indicating whether this instance is ghosted.
@@ -336,7 +339,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     <c>true</c> if this instance is ghosted; otherwise, <c>false</c>.
         /// </value>
-        public bool isGhosted => this.unit.CharacterState.HasFlag(GameObjectCharacterState.Ghosted);
+        public bool? isGhosted => this.asAiBase?.CharacterState.HasFlag(GameObjectCharacterState.Ghosted);
 
         /// <summary>
         ///     Gets a value indicating whether this instance is me.
@@ -344,7 +347,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     <c>true</c> if this instance is me; otherwise, <c>false</c>.
         /// </value>
-        public bool isMe => this.unit.IsMe;
+        public bool? isMe => this.gameObject.IsMe;
 
         /// <summary>
         ///     Gets a value indicating whether this instance is near sight.
@@ -352,7 +355,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     <c>true</c> if this instance is near sight; otherwise, <c>false</c>.
         /// </value>
-        public bool isNearSight => this.unit.CharacterState.HasFlag(GameObjectCharacterState.NearSight);
+        public bool? isNearSight => this.asAiBase?.CharacterState.HasFlag(GameObjectCharacterState.NearSight);
 
         /// <summary>
         ///     Gets a value indicating whether this instance is no render.
@@ -360,16 +363,16 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     <c>true</c> if this instance is no render; otherwise, <c>false</c>.
         /// </value>
-        public bool isNoRender => this.unit.CharacterState.HasFlag(GameObjectCharacterState.NoRender);
+        public bool? isNoRender => this.asAiBase?.CharacterState.HasFlag(GameObjectCharacterState.NoRender);
 
         /// <summary>
-        ///     Gets a value indicating whether this instance is reveal specific unit.
+        ///     Gets a value indicating whether this instance is reveal specific Obj_Ai_Base.
         /// </summary>
         /// <value>
-        ///     <c>true</c> if this instance is reveal specific unit; otherwise, <c>false</c>.
+        ///     <c>true</c> if this instance is reveal specific Obj_Ai_Base; otherwise, <c>false</c>.
         /// </value>
-        public bool isRevealSpecificUnit
-            => this.unit.CharacterState.HasFlag(GameObjectCharacterState.RevealSpecificUnit);
+        public bool? isRevealSpecificUnit
+            => this.asAiBase?.CharacterState.HasFlag(GameObjectCharacterState.RevealSpecificUnit);
 
         /// <summary>
         ///     Gets a value indicating whether this instance is stealthed.
@@ -377,7 +380,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     <c>true</c> if this instance is stealthed; otherwise, <c>false</c>.
         /// </value>
-        public bool isStealthed => this.unit.CharacterState.HasFlag(GameObjectCharacterState.IsStealth);
+        public bool? isStealthed => this.asAiBase?.CharacterState.HasFlag(GameObjectCharacterState.IsStealth);
 
         /// <summary>
         ///     Gets a value indicating whether this instance is taunted.
@@ -385,7 +388,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     <c>true</c> if this instance is taunted; otherwise, <c>false</c>.
         /// </value>
-        public bool isTaunted => this.unit.CharacterState.HasFlag(GameObjectCharacterState.Taunted);
+        public bool? isTaunted => this.asAiBase?.CharacterState.HasFlag(GameObjectCharacterState.Taunted);
 
         /// <summary>
         ///     Gets the level.
@@ -393,7 +396,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     The level.
         /// </value>
-        public int level => this.unit.Type == GameObjectType.obj_AI_Hero ? ((Obj_AI_Hero)this.unit).Level : 0;
+        public int? level => this.gameObject.Type == GameObjectType.obj_AI_Hero ? ((Obj_AI_Hero)this.gameObject).Level : 0;
 
         /// <summary>
         ///     Gets the life steal.
@@ -401,7 +404,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     The life steal.
         /// </value>
-        public float lifeSteal => this.unit.PercentLifeStealMod;
+        public float? lifeSteal => this.asAiBase?.PercentLifeStealMod;
 
         /// <summary>
         ///     Gets the magic armor.
@@ -409,7 +412,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     The magic armor.
         /// </value>
-        public float magicArmor => this.unit.SpellBlock;
+        public float? magicArmor => this.asAiBase?.SpellBlock;
 
         /// <summary>
         ///     Gets the magic penetration.
@@ -417,7 +420,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     The magic penetration.
         /// </value>
-        public float magicPen => this.unit.FlatMagicPenetrationMod;
+        public float? magicPen => this.asAiBase?.FlatMagicPenetrationMod;
 
         /// <summary>
         ///     Gets the magic pen perecent.
@@ -425,7 +428,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     The magic pen perecent.
         /// </value>
-        public float magicPenPerecent => this.unit.PercentMagicPenetrationMod;
+        public float? magicPenPerecent => this.asAiBase?.PercentMagicPenetrationMod;
 
         /// <summary>
         ///     Gets the magic reduction.
@@ -433,7 +436,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     The magic reduction.
         /// </value>
-        public float magicReduction => this.unit.FlatMagicReduction;
+        public float? magicReduction => this.asAiBase?.FlatMagicReduction;
 
         /// <summary>
         ///     Gets the mana.
@@ -441,7 +444,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     The mana.
         /// </value>
-        public float mana => this.unit.Mana;
+        public float? mana => this.asAiBase?.Mana;
 
         /// <summary>
         ///     Gets the maximum bounding box.
@@ -449,7 +452,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     The maximum bounding box.
         /// </value>
-        public LuaVector maxBBox => this.unit.BBox.Maximum.ToLuaVector();
+        public LuaVector maxBBox => this.gameObject.BBox.Maximum.ToLuaVector();
 
         /// <summary>
         ///     Gets the maximum health.
@@ -457,7 +460,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     The maximum health.
         /// </value>
-        public float maxHealth => this.unit.MaxHealth;
+        public float? maxHealth => this.asAiBase?.MaxHealth;
 
         /// <summary>
         ///     Gets the maximum mana.
@@ -465,7 +468,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     The maximum mana.
         /// </value>
-        public float maxMana => this.unit.MaxMana;
+        public float? maxMana => this.asAiBase?.MaxMana;
 
         /// <summary>
         ///     Gets the minimum bounding box.
@@ -473,7 +476,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     The minimum bounding box.
         /// </value>
-        public LuaVector minBBox => this.unit.BBox.Minimum.ToLuaVector();
+        public LuaVector minBBox => this.gameObject.BBox.Minimum.ToLuaVector();
 
         /// <summary>
         ///     Gets the mana regen.
@@ -481,15 +484,15 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     The mana regen.
         /// </value>
-        public float mpRegen => this.unit.PARRegenRate;
+        public float? mpRegen => this.asAiBase?.PARRegenRate;
 
         /// <summary>
-        ///     Gets the movement speed of the unit.
+        ///     Gets the movement speed of the Obj_AI_Base.
         /// </summary>
         /// <value>
-        ///     The movement speed of the unit.
+        ///     The movement speed of the Obj_AI_Base.
         /// </value>
-        public float ms => this.unit.MoveSpeed;
+        public float? ms => this.asAiBase?.MoveSpeed;
 
         /// <summary>
         ///     Gets the name.
@@ -497,7 +500,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     The name.
         /// </value>
-        public string name => this.unit.Name;
+        public string name => this.gameObject.Name;
 
         /// <summary>
         ///     Gets the network identifier.
@@ -505,7 +508,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     The network identifier.
         /// </value>
-        public int networkID => this.unit.NetworkId;
+        public int? networkID => this.gameObject.NetworkId;
 
         /// <summary>
         ///     Gets the physical reduction.
@@ -513,7 +516,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     The physical reduction.
         /// </value>
-        public float physReduction => this.unit.FlatPhysicalReduction;
+        public float? physReduction => this.asAiBase?.FlatPhysicalReduction;
 
         /// <summary>
         ///     Gets the position.
@@ -521,7 +524,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     The position.
         /// </value>
-        public LuaVector pos => this.unit.Position.ToLuaVector();
+        public LuaVector pos => this.gameObject.Position.ToLuaVector();
 
         /// <summary>
         ///     Gets the range.
@@ -529,12 +532,12 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     The range.
         /// </value>
-        public float range => this.unit.AttackRange;
+        public float? range => this.asAiBase?.AttackRange;
 
         /// <summary>
         ///     TODO
         /// </summary>
-        public GameUnit spellOwner => this;
+        public LuaGameObject spellOwner => this;
 
         /// <summary>
         ///     Gets the spell vamp.
@@ -542,7 +545,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     The spell vamp.
         /// </value>
-        public float spellVamp => this.unit.PercentSpellVampMod;
+        public float? spellVamp => this.asAiBase?.PercentSpellVampMod;
 
         /// <summary>
         ///     Gets the team.
@@ -550,7 +553,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     The team.
         /// </value>
-        public GameObjectTeam team => this.unit.Team;
+        public GameObjectTeam team => this.gameObject.Team;
 
         /// <summary>
         ///     Gets the total damage.
@@ -558,17 +561,17 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     The total damage.
         /// </value>
-        public float totalDamage => this.unit.TotalAttackDamage;
+        public float? totalDamage => this.asAiBase?.TotalAttackDamage;
 
         /// <summary>
         ///     Gets the type of the object as string(Bol :roto2:)
         /// </summary>
-        public string type => this.unit.Type.ToString();
+        public string type => this.gameObject.Type.ToString();
 
         /// <summary>
         ///     Gets if the hero is visible or not
         /// </summary>
-        public bool visible => this.unit.IsVisible;
+        public bool? visible => this.gameObject.IsVisible;
 
         /// <summary>
         ///     TODO:
@@ -582,7 +585,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     The X Position.
         /// </value>
-        public float x => this.unit.Position.X;
+        public float? x => this.gameObject.Position.X;
 
         /// <summary>
         ///     Gets the Y position.
@@ -590,7 +593,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     The Y position.
         /// </value>
-        public float y => this.unit.Position.Z;
+        public float? y => this.gameObject.Position.Z;
 
         /// <summary>
         ///     Gets the Z position.
@@ -598,7 +601,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <value>
         ///     The Z Position
         /// </value>
-        public float z => this.unit.Position.Y;
+        public float? z => this.gameObject.Position.Y;
 
         #endregion
 
@@ -612,8 +615,8 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <returns><c>true</c> if the command was issued sucessfully.</returns>
         public bool Attack(float x, float z)
         {
-            return this.unit.Type == GameObjectType.obj_AI_Hero
-                   && this.unit.IssueOrder(GameObjectOrder.AttackTo, new Vector3(x, z, 0));
+            return this.gameObject.Type == GameObjectType.obj_AI_Hero
+                   && this.asAiBase.IssueOrder(GameObjectOrder.AttackTo, new Vector3(x,z,0));
         }
 
         /// <summary>
@@ -624,7 +627,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <returns></returns>
         public double CalcDamage(Obj_AI_Base obj, double attackDamage)
         {
-            return this.unit.CalcDamage(obj, Damage.DamageType.Physical, attackDamage);
+            return this.asAiBase.CalcDamage(obj, Damage.DamageType.Physical, attackDamage);
         }
 
         /// <summary>
@@ -635,11 +638,11 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <returns></returns>
         public double CalcMagicDamage(Obj_AI_Base obj, double magicalDamage)
         {
-            return this.unit.CalcDamage(obj, Damage.DamageType.Magical, magicalDamage);
+            return this.asAiBase.CalcDamage(obj, Damage.DamageType.Magical, magicalDamage);
         }
 
         /// <summary>
-        ///     Determines whether this unit can the specified spell.
+        ///     Determines whether this gameObject can the specified spell.
         /// </summary>
         /// <param name="spellSlot">The spell slot.</param>
         /// <returns></returns>
@@ -656,7 +659,7 @@ namespace BridgeOfLondon.Core.Wrappers
         public Buff getBuff(int index)
         {
             // Lua arrays start at 1
-            return this.unit.Buffs[index - 1]?.ToLuaBuff();
+            return this.asAiBase.Buffs[index - 1]?.ToLuaBuff();
         }
 
         /// <summary>
@@ -664,9 +667,9 @@ namespace BridgeOfLondon.Core.Wrappers
         /// </summary>
         /// <param name="gameObject">The game object.</param>
         /// <returns></returns>
-        public double GetDistance(GameObject gameObject)
+        public double GetDistance(GameObject gameObject0)
         {
-            return this.unit.Distance(gameObject.Position);
+            return this.gameObject.Position.Distance(gameObject0.Position);
         }
 
         /// <summary>
@@ -687,7 +690,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <returns></returns>
         public LuaItem getItem(int index)
         {
-            return this.unit.InventoryItems[index].ToLuaItem();
+            return this.asAiBase.InventoryItems[index].ToLuaItem();
         }
 
         /// <summary>
@@ -704,22 +707,22 @@ namespace BridgeOfLondon.Core.Wrappers
         ///     Holds the position.
         /// </summary>
         /// <returns></returns>
-        public bool HoldPosition()
+        public bool? HoldPosition()
         {
-            return this.unit.Type == GameObjectType.obj_AI_Hero
-                   && this.unit.IssueOrder(GameObjectOrder.HoldPosition, this.unit);
+            return this.gameObject.Type == GameObjectType.obj_AI_Hero
+                   && this.asAiBase.IssueOrder(GameObjectOrder.HoldPosition, this.gameObject);
         }
 
         /// <summary>
-        /// Moves the unit to the given position
+        /// Moves the gameObject to the given position
         /// </summary>
         /// <param name="x">x coordinate of position</param>
         /// <param name="z">z coordinate of position</param>
         /// <returns></returns>
-        public bool MoveTo(float x, float z)
+        public bool? MoveTo(float x, float z)
         {
-            return this.unit.Type == GameObjectType.obj_AI_Hero
-                   && this.unit.IssueOrder(GameObjectOrder.MoveTo, new Vector2(x,z).To3D2());
+            return this.gameObject.Type == GameObjectType.obj_AI_Hero
+                   && this.asAiBase.IssueOrder(GameObjectOrder.MoveTo, new Vector2(x,z).To3D2());
         }
 
         #endregion
@@ -733,7 +736,7 @@ namespace BridgeOfLondon.Core.Wrappers
         /// <returns></returns>
         private SpellDataInst GetSpellInst(SpellSlot spellSlot)
         {
-            return this.unit.Spellbook.GetSpell(spellSlot);
+            return this.asAiBase.Spellbook.GetSpell(spellSlot);
         }
 
         #endregion

@@ -48,7 +48,7 @@
         /// </summary>
         public HeroManagerImpl()
         {
-            this.Heroes = ObjectManager.Get<Obj_AI_Hero>().Select(x => new GameUnit(x)).ToArray();
+            this.Heroes = ObjectManager.Get<Obj_AI_Hero>().Select(x => new LuaGameObject(x)).ToArray();
         }
 
         #endregion
@@ -74,7 +74,7 @@
         ///     The heroes.
         /// </value>
         [MoonSharpHidden]
-        private GameUnit[] Heroes { get; }
+        private LuaGameObject[] Heroes { get; }
 
         #endregion
 
@@ -85,7 +85,7 @@
         /// </summary>
         /// <param name="index">The index.</param>
         /// <returns></returns>
-        public GameUnit getHero(int index)
+        public LuaGameObject getHero(int index)
         {
             return this.Heroes[index - 1];
         }

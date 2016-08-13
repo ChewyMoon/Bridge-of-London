@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using BridgeOfLondon.Core.Wrappers;
+using LeagueSharp;
+using MoonSharp.Interpreter;
 
 namespace BridgeOfLondon.Core.API.Callbacks
 {
-    using MoonSharp.Interpreter;
-    using LeagueSharp;
-
     internal partial class CallbackProvider
     {
         #region Properties
@@ -17,7 +16,7 @@ namespace BridgeOfLondon.Core.API.Callbacks
         /// <summary>
         /// The event that raises OnTick Callbacks
         /// </summary>
-        private event ScriptFunctionDelegate TickCallbacks;
+        private event ScriptFunctionDelegate CreateObjectCallbacks;
         #endregion
 
         #region Public Methods and Operators
@@ -27,27 +26,27 @@ namespace BridgeOfLondon.Core.API.Callbacks
         ///     Adds the tick callback.
         /// </summary>
         /// <param name="func">The function.</param>
-        public void AddTickCallback(Closure func)
+        public void CreateObjectCallback(Closure func)
         {
             TickCallbacks += func.GetDelegate();
         }
 
         /// <summary>
-        /// Fired when the game is updated.
+        /// Fired when a game object is created.
         /// </summary>
         /// <param name="args">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private void GameOnUpdate(EventArgs args)
+        private void OnCreateObject(GameObject sender, EventArgs args)
         {
-            if (TickCallbacks == null)
+            if (CreateObjectCallbacks == null)
             {
                 return;
             }
-
-            foreach (Delegate d in TickCallbacks.GetInvocationList().ToArray())
+            var luaSender = sender.ToLuaGameUnit();
+            foreach (Delegate d in CreateObjectCallbacks.GetInvocationList().ToArray())
             {
                 try
                 {
-                    ((ScriptFunctionDelegate) d)();
+                    ((ScriptFunctionDelegate)d)(luaSender);
                 }
                 catch (Exception e)
                 {

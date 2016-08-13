@@ -30,7 +30,6 @@ namespace BridgeOfLondon.Core.API.Callbacks
         }
         #endregion
 
-
         #region Methods
 
         /// <summary>
@@ -52,7 +51,7 @@ namespace BridgeOfLondon.Core.API.Callbacks
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine();
+                    Console.WriteLine(e);
                 }
             }
         }

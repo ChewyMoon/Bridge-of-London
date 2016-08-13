@@ -1,4 +1,5 @@
 ﻿using System;
+using BridgeOfLondon.Core.Wrappers;
 using MoonSharp.Interpreter;
 
 namespace BridgeOfLondon.Core.API.Callbacks
@@ -14,6 +15,7 @@ namespace BridgeOfLondon.Core.API.Callbacks
         {
             script.Globals["AddTickCallback"] = (Action<Closure>)this.AddTickCallback;
             script.Globals["AddLoadCallback"] = (Action<Closure>)this.AddLoadCallback;
+            script.Globals["AddCreateObjCallback"] = (Action<Closure>) this.CreateObjectCallback;
         }
 
         /// <summary>
@@ -23,6 +25,7 @@ namespace BridgeOfLondon.Core.API.Callbacks
         {
             LeagueSharp.Common.CustomEvents.Game.OnGameLoad += this.GameOnGameLoad;
             LeagueSharp.Game.OnUpdate += this.GameOnUpdate;
+            LeagueSharp.GameObject.OnCreate += this.OnCreateObject;
         }
     }
 }
