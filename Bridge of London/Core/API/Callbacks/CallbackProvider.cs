@@ -17,8 +17,9 @@
         /// <param name="script">The script.</param>
         public void AddApi(Script script)
         {
-            script.Globals["AddTickCallback"] = (Action<Closure>)this.AddTickCallback;
             script.Globals["AddLoadCallback"] = (Action<Closure>)this.AddLoadCallback;
+            script.Globals["AddTickCallback"] = (Action<Closure>)this.AddDrawCallback;
+            script.Globals["AddDrawCallback"] = (Action<Closure>)this.AddTickCallback;
             script.Globals["AddCreateObjCallback"] = (Action<Closure>) this.CreateObjectCallback;
         }
 
@@ -29,8 +30,8 @@
         {
             CustomEvents.Game.OnGameLoad += this.GameOnGameLoad;
             Game.OnUpdate += this.GameOnUpdate;
+            Drawing.OnDraw += this.DrawingOnDraw;
             GameObject.OnCreate += this.OnCreateObject;
-
         }
 
         #endregion
