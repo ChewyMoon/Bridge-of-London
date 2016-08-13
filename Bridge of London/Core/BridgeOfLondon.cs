@@ -129,7 +129,9 @@ namespace BridgeOfLondon.Core
             {
                 Directory.CreateDirectory(this.Config.LibraryDirectory);
             }
-
+            var k = new CallbackProvider();
+            k.AddApi(LuaVM);
+            k.HookEvents();
             foreach (var luaScript in Directory.GetFiles(this.Config.ScriptDirectory))
             {
                 try
@@ -147,9 +149,6 @@ namespace BridgeOfLondon.Core
                     Console.WriteLine(e);
                 }
             }
-            var k = new CallbackProvider();
-            k.AddApi(LuaVM);
-            k.HookEvents();
             k.RegisterStandardCalls(LuaVM);
         }
 
