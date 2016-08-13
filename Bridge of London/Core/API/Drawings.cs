@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using BridgeOfLondon.Core.Wrappers;
 using LeagueSharp;
 using MoonSharp.Interpreter;
@@ -57,7 +56,7 @@ namespace BridgeOfLondon.Core.API
 
         public void DrawCircle(float x, float y, float z, float size, int color)
         {
-            Drawing.DrawCircle(new Vector3(x,z,y), size, Color.FromArgb(color) );
+            Drawing.DrawCircle(new Vector3(x,z,y), size, Color.FromArgb(0xFF,0xFF,0,0));
         }
 
         public LuaVector3 LuaVector3Wrapper(float x, float y, float z)

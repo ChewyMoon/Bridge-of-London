@@ -41,7 +41,6 @@
             {
                 return;
             }
-
             foreach (var d in this.TickCallbacks.GetInvocationList().ToArray())
             {
                 try

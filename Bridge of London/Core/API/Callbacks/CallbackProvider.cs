@@ -18,8 +18,8 @@
         public void AddApi(Script script)
         {
             script.Globals["AddLoadCallback"] = (Action<Closure>)this.AddLoadCallback;
-            script.Globals["AddTickCallback"] = (Action<Closure>)this.AddDrawCallback;
-            script.Globals["AddDrawCallback"] = (Action<Closure>)this.AddTickCallback;
+            script.Globals["AddTickCallback"] = (Action<Closure>)this.AddTickCallback;
+            script.Globals["AddDrawCallback"] = (Action<Closure>)this.AddDrawCallback;
             script.Globals["AddCreateObjCallback"] = (Action<Closure>) this.CreateObjectCallback;
         }
 
