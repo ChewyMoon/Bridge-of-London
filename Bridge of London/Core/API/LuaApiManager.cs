@@ -24,7 +24,7 @@ namespace BridgeOfLondon.Core.API
                 Assembly.GetExecutingAssembly()
                     .GetTypes()
                     .Where(p => typeof(ILuaApiProvider).IsAssignableFrom(p) && !p.IsInterface &&
-                                !typeof(ICallback).IsAssignableFrom(p) && p != typeof(CallbackProvider))
+                                !typeof(Callback).IsAssignableFrom(p) && p != typeof(CallbackProvider))
                     .Select(x => Expression.Lambda<Func<ILuaApiProvider>>(Expression.New(x)).Compile()());
         }
 

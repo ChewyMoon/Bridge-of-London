@@ -5,12 +5,12 @@
     using LeagueSharp;
     using MoonSharp.Interpreter;
     using Core.Wrappers;
-    internal class CreateObjectCallback : Callback
+    internal sealed class CreateObjectCallback : Callback
     {
         #region Properties
         public override string AddCallbackLuaFunctionName => "AddCreateObjCallback";
         public override string DefaultCallbackFunctionName => "OnCreateObj"; 
-        public  event ScriptFunctionDelegate Callbacks;
+        public virtual event ScriptFunctionDelegate Callbacks;
         #endregion
 
         #region Public Methods
@@ -20,11 +20,6 @@
         public override void HookEvents()
         {
             GameObject.OnCreate += GameObjectOnOnCreate;
-        }
-
-        public override void AddCallback(Closure function)
-        {
-            Callbacks += function.GetDelegate();
         }
         #endregion
 

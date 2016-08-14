@@ -6,12 +6,12 @@ namespace BridgeOfLondon.Core.API.Callbacks
     using System.Linq;
     using LeagueSharp;
     using MoonSharp.Interpreter;
-    internal class LoadCallback : Callback
+    internal sealed class LoadCallback : Callback
     {
         #region Properties
         public override string AddCallbackLuaFunctionName => "AddLoadCallback";
         public override string DefaultCallbackFunctionName => "OnLoad";
-        public  event ScriptFunctionDelegate Callbacks;
+        public override event ScriptFunctionDelegate Callbacks;
         #endregion
 
         #region Public Methods
@@ -21,11 +21,6 @@ namespace BridgeOfLondon.Core.API.Callbacks
         public override void HookEvents()
         {
             CustomEvents.Game.OnGameLoad += GameOnOnGameLoad;
-        }
-
-        public override void AddCallback(Closure function)
-        {
-            Callbacks += function.GetDelegate();
         }
         #endregion
 

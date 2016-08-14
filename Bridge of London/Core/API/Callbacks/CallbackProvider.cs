@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using LeagueSharp;
-using LeagueSharp.Common;
 using MoonSharp.Interpreter;
 
 namespace BridgeOfLondon.Core.API.Callbacks
 {
-    internal partial class CallbackProvider : ILuaApiProvider
+    internal class CallbackProvider : ILuaApiProvider
     {
-        private readonly IEnumerable<Callback> callbacks;
+        private readonly List<Callback> callbacks = new List<Callback>();
 
         #region Public Methods and Operators
 
@@ -23,6 +21,7 @@ namespace BridgeOfLondon.Core.API.Callbacks
         {
             foreach (var callback in callbacks)
             {
+                Console.WriteLine(callback);
                 callback.AddApi(script);
             }
         }
@@ -40,9 +39,13 @@ namespace BridgeOfLondon.Core.API.Callbacks
 
         public CallbackProvider()
         {
-            callbacks = Assembly.GetExecutingAssembly().GetTypes()
-                .Where(p => p.IsSubclassOf(typeof(Callback)))
-                .Select(x => Expression.Lambda<Func<Callback>>(Expression.New(x)).Compile()());
+            var callbackTypes = Assembly.GetExecutingAssembly().GetTypes()
+                .Where(p => p.IsSubclassOf(typeof(Callback)));
+
+            foreach (var callbackType in callbackTypes)
+            {
+                callbacks.Add(Expression.Lambda<Func<Callback>>(Expression.New(callbackType)).Compile()());
+            }
         }
 
         public void RegisterStandardCalls(Script script)

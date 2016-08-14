@@ -6,12 +6,12 @@ namespace BridgeOfLondon.Core.API.Callbacks
     using System.Linq;
     using LeagueSharp;
     using MoonSharp.Interpreter;
-    internal class ProcessSpellCallback : Callback
+    internal sealed class ProcessSpellCallback : Callback
     {
         #region Properties
         public override string AddCallbackLuaFunctionName => "AddProcessSpellCallback";
         public override string DefaultCallbackFunctionName => "OnProcessSpell";
-        public  event ScriptFunctionDelegate Callbacks;
+        public override event ScriptFunctionDelegate Callbacks;
         #endregion
 
         #region Public Methods
@@ -21,11 +21,6 @@ namespace BridgeOfLondon.Core.API.Callbacks
         public override void HookEvents()
         {
             Obj_AI_Base.OnProcessSpellCast += ObjAiBaseOnOnProcessSpellCast;
-        }
-
-        public override void AddCallback(Closure function)
-        {
-            Callbacks += function.GetDelegate();
         }
         #endregion
 

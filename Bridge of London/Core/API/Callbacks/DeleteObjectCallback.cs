@@ -5,12 +5,12 @@
     using LeagueSharp;
     using MoonSharp.Interpreter;
     using Core.Wrappers;
-    internal class DeleteObjectCallback : Callback
+    internal sealed class DeleteObjectCallback : Callback
     {
         #region Properties
         public override string AddCallbackLuaFunctionName => "AddDeleteObjCallback";
         public override string DefaultCallbackFunctionName => "OnDeleteObj";
-        public event ScriptFunctionDelegate Callbacks;
+        public override event ScriptFunctionDelegate Callbacks;
         #endregion
 
         #region Public Methods
@@ -20,11 +20,6 @@
         public override void HookEvents()
         {
             GameObject.OnDelete += GameObjectOnOnDelete;
-        }
-
-        public override void AddCallback(Closure function)
-        {
-            Callbacks += function.GetDelegate();
         }
         #endregion
 

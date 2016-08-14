@@ -4,12 +4,12 @@
     using System.Linq;
     using LeagueSharp;
     using MoonSharp.Interpreter;
-    internal class DrawCallback : Callback
+    internal sealed class DrawCallback : Callback
     {
         #region Properties
         public override string AddCallbackLuaFunctionName => "AddDrawCallback";
         public override string DefaultCallbackFunctionName => "OnDraw";
-        public event ScriptFunctionDelegate Callbacks; 
+        public override event ScriptFunctionDelegate Callbacks; 
         #endregion
 
         #region Public Methods
@@ -19,11 +19,6 @@
         public override void HookEvents()
         {
             Drawing.OnDraw += DrawingOnOnDraw;
-        }
-
-        public override void AddCallback(Closure function)
-        {
-            Callbacks += function.GetDelegate();
         }
         #endregion
 

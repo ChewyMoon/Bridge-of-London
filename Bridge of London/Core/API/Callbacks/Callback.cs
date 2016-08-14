@@ -7,26 +7,27 @@ using MoonSharp.Interpreter;
 
 namespace BridgeOfLondon.Core.API.Callbacks
 {
-    class Callback : ICallback
+    abstract class Callback : ICallback
     {
         public virtual string AddCallbackLuaFunctionName { get;}
         public virtual string DefaultCallbackFunctionName { get; }
+        public abstract event ScriptFunctionDelegate Callbacks;
 
         public void AddApi(Script script)
         {
             script.Globals[AddCallbackLuaFunctionName] = (Action<Closure>)this.AddCallback;
         }
 
-        public virtual void HookEvents()
-        {
-        }
+        public abstract void HookEvents();
 
         /// <summary>
-        ///     Adds the Object callback.
+        ///     Adds the callback.
         /// </summary>
         /// <param name="function">The function.</param>
         public virtual void AddCallback(Closure function)
         {
+            Console.WriteLine($"Callback added for {DefaultCallbackFunctionName}");
+            Callbacks += function.GetDelegate();
         }
 
         public void RegisterDefaultCallback(Script script)
