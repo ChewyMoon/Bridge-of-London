@@ -40,12 +40,6 @@ namespace BridgeOfLondon.Core.API.Callbacks
 
         public CallbackProvider()
         {
-            /* callbacks.Add(new Callback("OnLoad", "AddLoadCallback", this.AddLoadCallback));
-            callbacks.Add(new Callback("OnTick", "AddTickCallback", this.AddTickCallback));
-            callbacks.Add(new Callback("OnDraw", "AddDrawCallback", this.AddDrawCallback));
-            callbacks.Add(new Callback("OnCreateObj", "AddCreateObjCallback", this.AddCreateObjectCallback));
-            callbacks.Add(new Callback("OnDeleteObj", "AddDeleteObjCallback", this.AddDeleteObjectCallback));
-            callbacks.Add(new Callback("OnProcessSpell", "AddProcessSpellCallback", this.AddProcessSpellCallback));*/
             callbacks = Assembly.GetExecutingAssembly().GetTypes()
                 .Where(p => p.IsSubclassOf(typeof(Callback)))
                 .Select(x => Expression.Lambda<Func<Callback>>(Expression.New(x)).Compile()());
