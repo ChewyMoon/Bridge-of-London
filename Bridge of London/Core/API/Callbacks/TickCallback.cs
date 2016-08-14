@@ -2,46 +2,39 @@
 {
     using System;
     using System.Linq;
-
+    using LeagueSharp;
     using MoonSharp.Interpreter;
-
-    internal partial class CallbackProvider
+    internal class TickCallback : Callback
     {
-        #region Events
-
-        /// <summary>
-        ///     The event that raises OnTick Callbacks
-        /// </summary>
-        private event ScriptFunctionDelegate TickCallbacks;
-
+        #region Properties
+        public override string AddCallbackLuaFunctionName => "AddTickCallback";
+        public override string DefaultCallbackFunctionName => "OnTick";
+        public override event ScriptFunctionDelegate Callbacks;
         #endregion
 
-        #region Public Methods and Operators
-
+        #region Public Methods
         /// <summary>
-        ///     Adds the tick callback.
+        /// Hooks the events
         /// </summary>
-        /// <param name="func">The function.</param>
-        public void AddTickCallback(Closure func)
+        public override void HookEvents()
         {
-            this.TickCallbacks += func.GetDelegate();
+            Game.OnUpdate += GameOnOnUpdate;
         }
-
         #endregion
 
         #region Methods
-
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
-        private void GameOnUpdate(EventArgs args)
+        private void GameOnOnUpdate(EventArgs args)
         {
-            if (this.TickCallbacks == null)
+            if (Callbacks == null)
             {
                 return;
             }
-            foreach (var d in this.TickCallbacks.GetInvocationList().ToArray())
+
+            foreach (var d in Callbacks.GetInvocationList().ToArray())
             {
                 try
                 {
@@ -53,7 +46,6 @@
                 }
             }
         }
-
         #endregion
     }
 }

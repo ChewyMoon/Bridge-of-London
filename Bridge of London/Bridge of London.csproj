@@ -65,10 +65,12 @@
     <Compile Include="Core\API\Callbacks\CreateObjectCallback.cs" />
     <Compile Include="Core\API\Callbacks\DeleteObjectCallback.cs" />
     <Compile Include="Core\API\Callbacks\DrawCallback.cs" />
+    <Compile Include="Core\API\Callbacks\ICallback.cs" />
     <Compile Include="Core\API\Callbacks\LoadCallback.cs" />
     <Compile Include="Core\API\Callbacks\ProcessSpellCallback.cs" />
     <Compile Include="Core\API\Callbacks\TickCallback.cs" />
     <Compile Include="Core\API\Drawings.cs" />
+    <Compile Include="Core\API\Globals\SpellApi.cs" />
     <Compile Include="Core\API\Globals\Utility.cs" />
     <Compile Include="Core\API\Managers\HeroManager.cs" />
     <Compile Include="Core\ScriptExtensions.cs" />

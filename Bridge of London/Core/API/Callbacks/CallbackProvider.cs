@@ -1,17 +1,17 @@
-﻿﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
+using LeagueSharp;
+using LeagueSharp.Common;
+using MoonSharp.Interpreter;
 
 namespace BridgeOfLondon.Core.API.Callbacks
 {
-    using System;
-
-    using LeagueSharp;
-    using LeagueSharp.Common;
-
-    using MoonSharp.Interpreter;
-
     internal partial class CallbackProvider : ILuaApiProvider
     {
-        private List<Callback> callbacks = new List<Callback>();
+        private readonly IEnumerable<Callback> callbacks;
 
         #region Public Methods and Operators
 
@@ -23,7 +23,7 @@ namespace BridgeOfLondon.Core.API.Callbacks
         {
             foreach (var callback in callbacks)
             {
-                script.Globals[callback.AddCallbackLuaName] = callback.AddCallbackFunction;
+                callback.AddApi(script);
             }
         }
 
@@ -32,44 +32,30 @@ namespace BridgeOfLondon.Core.API.Callbacks
         /// </summary>
         public void HookEvents()
         {
-            CustomEvents.Game.OnGameLoad += this.GameOnGameLoad;
-            Game.OnUpdate += this.GameOnUpdate;
-            Drawing.OnDraw += this.DrawingOnDraw;
-            GameObject.OnCreate += this.OnCreateObject;
-            GameObject.OnDelete += this.OnDeleteObject;
-            Obj_AI_Base.OnProcessSpellCast += this.ObjAiBaseOnProcessSpellCast;
+            foreach (var callback in callbacks)
+            {
+                callback.HookEvents();
+            }
         }
 
         public CallbackProvider()
         {
-            callbacks.Add(new Callback("OnLoad", "AddLoadCallback", this.AddLoadCallback));
+            /* callbacks.Add(new Callback("OnLoad", "AddLoadCallback", this.AddLoadCallback));
             callbacks.Add(new Callback("OnTick", "AddTickCallback", this.AddTickCallback));
             callbacks.Add(new Callback("OnDraw", "AddDrawCallback", this.AddDrawCallback));
             callbacks.Add(new Callback("OnCreateObj", "AddCreateObjCallback", this.AddCreateObjectCallback));
             callbacks.Add(new Callback("OnDeleteObj", "AddDeleteObjCallback", this.AddDeleteObjectCallback));
-            callbacks.Add(new Callback("OnProcessSpell", "AddProcessSpellCallback", this.AddProcessSpellCallback));
+            callbacks.Add(new Callback("OnProcessSpell", "AddProcessSpellCallback", this.AddProcessSpellCallback));*/
+            callbacks = Assembly.GetExecutingAssembly().GetTypes()
+                .Where(p => p.IsSubclassOf(typeof(Callback)))
+                .Select(x => Expression.Lambda<Func<Callback>>(Expression.New(x)).Compile()());
         }
 
         public void RegisterStandardCalls(Script script)
         {
-            if (script.Globals["Environments"] == null)
+            foreach (var callback in callbacks)
             {
-                return;
-            }
-
-            foreach (var tablePair in ((Table)script.Globals["Environments"]).Pairs)
-            {
-                var envTable = (tablePair.Value.Table);
-                Console.WriteLine("Registering std calls for "+ tablePair.Key);
-                foreach (var callback in callbacks)
-                {
-                    var function = envTable[callback.DefaultFunction] as Closure;
-                    if (function == null)
-                    {
-                        continue;
-                    }
-                    callback.AddCallbackFunction(function);
-                }
+                callback.RegisterDefaultCallback(script);
             }
         }
 

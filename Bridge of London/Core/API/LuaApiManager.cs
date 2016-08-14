@@ -1,15 +1,13 @@
-﻿using BridgeOfLondon.Core.API.Callbacks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
+using BridgeOfLondon.Core.API.Callbacks;
+using MoonSharp.Interpreter;
 
 namespace BridgeOfLondon.Core.API
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Linq.Expressions;
-    using System.Reflection;
-
-    using MoonSharp.Interpreter;
-
     /// <summary>
     ///     Manages the Lua API for a script.
     /// </summary>
@@ -18,14 +16,15 @@ namespace BridgeOfLondon.Core.API
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes static members of the <see cref="LuaApiManager"/> class. 
+        ///     Initializes static members of the <see cref="LuaApiManager" /> class.
         /// </summary>
         static LuaApiManager()
         {
             ApiProviders =
                 Assembly.GetExecutingAssembly()
                     .GetTypes()
-                    .Where(p => typeof(ILuaApiProvider).IsAssignableFrom(p) && !p.IsInterface && p != typeof(CallbackProvider)) 
+                    .Where(p => typeof(ILuaApiProvider).IsAssignableFrom(p) && !p.IsInterface &&
+                                !typeof(ICallback).IsAssignableFrom(p) && p != typeof(CallbackProvider))
                     .Select(x => Expression.Lambda<Func<ILuaApiProvider>>(Expression.New(x)).Compile()());
         }
 

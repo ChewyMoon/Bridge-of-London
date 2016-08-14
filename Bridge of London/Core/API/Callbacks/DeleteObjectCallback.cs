@@ -1,49 +1,47 @@
-﻿using System;
-using System.Linq;
-using BridgeOfLondon.Core.Wrappers;
-using LeagueSharp;
-using MoonSharp.Interpreter;
-
-namespace BridgeOfLondon.Core.API.Callbacks
+﻿namespace BridgeOfLondon.Core.API.Callbacks
 {
-    internal partial class CallbackProvider
+    using System;
+    using System.Linq;
+    using LeagueSharp;
+    using MoonSharp.Interpreter;
+    using Core.Wrappers;
+    internal class DeleteObjectCallback : Callback
     {
         #region Properties
-
-        /// <summary>
-        ///     The event that raises OnTick Callbacks
-        /// </summary>
-        private event ScriptFunctionDelegate DeleteObjectCallbacks;
-
+        public override string AddCallbackLuaFunctionName => "AddDeleteObjCallback";
+        public override string DefaultCallbackFunctionName => "OnDeleteObj";
+        public override event ScriptFunctionDelegate Callbacks;
         #endregion
 
-        #region Public Methods and Operators
-
+        #region Public Methods
         /// <summary>
-        ///     Adds the tick callback.
+        /// Hooks the events
         /// </summary>
-        /// <param name="func">The function.</param>
-        public void AddDeleteObjectCallback(Closure func)
+        public override void HookEvents()
         {
-            DeleteObjectCallbacks += func.GetDelegate();
+            GameObject.OnDelete += GameObjectOnOnDelete;
         }
+        #endregion
 
+        #region Methods
         /// <summary>
-        ///     Fired when a game object is Deleted.
+        ///     Fired when a game object is deleted.
         /// </summary>
+        /// <param name="sender"> The <see cref="GameObject"/> instance that was deleted</param>
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
-        private void OnDeleteObject(GameObject sender, EventArgs args)
+        private void GameObjectOnOnDelete(GameObject sender, EventArgs args)
         {
-            if (DeleteObjectCallbacks == null)
+            if (Callbacks == null)
             {
                 return;
             }
-            var luaSender = sender.ToLuaGameObject();
-            foreach (var d in DeleteObjectCallbacks.GetInvocationList().ToArray())
+            var luaObject = sender.ToLuaGameObject();
+
+            foreach (var d in Callbacks.GetInvocationList().ToArray())
             {
                 try
                 {
-                    ((ScriptFunctionDelegate) d)(luaSender);
+                    ((ScriptFunctionDelegate)d)(luaObject);
                 }
                 catch (Exception e)
                 {
@@ -51,7 +49,6 @@ namespace BridgeOfLondon.Core.API.Callbacks
                 }
             }
         }
-
         #endregion
     }
 }

@@ -1,52 +1,44 @@
 ﻿using BridgeOfLondon.Core.Wrappers;
-using LeagueSharp;
 
 namespace BridgeOfLondon.Core.API.Callbacks
 {
     using System;
     using System.Linq;
-
+    using LeagueSharp;
     using MoonSharp.Interpreter;
-
-    internal partial class CallbackProvider
+    internal class ProcessSpellCallback : Callback
     {
-        #region Events
-
-        /// <summary>
-        ///     The event that raises OnLoad Callbacks
-        /// </summary>
-        private event ScriptFunctionDelegate ProcessSpellCallback;
-
+        #region Properties
+        public override string AddCallbackLuaFunctionName => "AddProcessSpellCallback";
+        public override string DefaultCallbackFunctionName => "OnProcessSpell";
+        public override event ScriptFunctionDelegate Callbacks;
         #endregion
 
-        #region Public Methods and Operators
-
+        #region Public Methods
         /// <summary>
-        ///     Adds the load callback.
+        /// Hooks the events
         /// </summary>
-        /// <param name="func">The function.</param>
-        public void AddProcessSpellCallback(Closure func)
+        public override void HookEvents()
         {
-            this.ProcessSpellCallback += func.GetDelegate();
+            Obj_AI_Base.OnProcessSpellCast += ObjAiBaseOnOnProcessSpellCast;
         }
 
         #endregion
 
         #region Methods
-
         /// <summary>
-        ///     Fired when the game is updated.
+        ///     Fired when a spell is casted.
         /// </summary>
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
-        private void ObjAiBaseOnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+        private void ObjAiBaseOnOnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            if (this.ProcessSpellCallback == null)
+            if (Callbacks == null)
             {
                 return;
             }
             var luaUnit = sender.ToLuaGameObject();
             var luaSpell = args.ToLua();
-            foreach (var d in this.ProcessSpellCallback.GetInvocationList().ToArray())
+            foreach (var d in Callbacks.GetInvocationList().ToArray())
             {
                 try
                 {
@@ -58,7 +50,6 @@ namespace BridgeOfLondon.Core.API.Callbacks
                 }
             }
         }
-
         #endregion
     }
 }

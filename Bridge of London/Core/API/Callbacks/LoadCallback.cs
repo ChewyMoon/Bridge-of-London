@@ -1,48 +1,43 @@
-﻿namespace BridgeOfLondon.Core.API.Callbacks
+﻿using LeagueSharp.Common;
+
+namespace BridgeOfLondon.Core.API.Callbacks
 {
     using System;
     using System.Linq;
-
+    using LeagueSharp;
     using MoonSharp.Interpreter;
-
-    internal partial class CallbackProvider
+    internal class LoadCallback : Callback
     {
-        #region Events
-
-        /// <summary>
-        ///     The event that raises OnLoad Callbacks
-        /// </summary>
-        private event ScriptFunctionDelegate LoadCallbacks;
-
+        #region Properties
+        public override string AddCallbackLuaFunctionName => "AddLoadCallback";
+        public override string DefaultCallbackFunctionName => "OnLoad";
+        public override event ScriptFunctionDelegate Callbacks;
         #endregion
 
-        #region Public Methods and Operators
-
+        #region Public Methods
         /// <summary>
-        ///     Adds the load callback.
+        /// Hooks the events
         /// </summary>
-        /// <param name="func">The function.</param>
-        public void AddLoadCallback(Closure func)
+        public override void HookEvents()
         {
-            this.LoadCallbacks += func.GetDelegate();
+            CustomEvents.Game.OnGameLoad += GameOnOnGameLoad;
         }
 
         #endregion
 
         #region Methods
-
         /// <summary>
         ///     Fired when the game is Loaded.
         /// </summary>
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
-        private void GameOnGameLoad(EventArgs args)
+        private void GameOnOnGameLoad(EventArgs args)
         {
-            if (this.LoadCallbacks == null)
+            if (Callbacks == null)
             {
                 return;
             }
 
-            foreach (var d in this.LoadCallbacks.GetInvocationList().ToArray())
+            foreach (var d in Callbacks.GetInvocationList().ToArray())
             {
                 try
                 {
@@ -54,7 +49,6 @@
                 }
             }
         }
-
         #endregion
     }
 }

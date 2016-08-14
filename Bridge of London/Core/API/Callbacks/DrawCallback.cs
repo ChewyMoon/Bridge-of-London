@@ -2,47 +2,39 @@
 {
     using System;
     using System.Linq;
-
+    using LeagueSharp;
     using MoonSharp.Interpreter;
-
-    internal partial class CallbackProvider
+    internal class DrawCallback : Callback
     {
-        #region Events
-
-        /// <summary>
-        ///     The event that raises OnDraw Callbacks
-        /// </summary>
-        private event ScriptFunctionDelegate DrawCallbacks;
-
+        #region Properties
+        public override string AddCallbackLuaFunctionName => "AddDrawCallback";
+        public override string DefaultCallbackFunctionName => "OnDraw";
+        public override event ScriptFunctionDelegate Callbacks; 
         #endregion
 
-        #region Public Methods and Operators
-
+        #region Public Methods
         /// <summary>
-        ///     Adds the Draw callback.
+        /// Hooks the events
         /// </summary>
-        /// <param name="func">The function.</param>
-        public void AddDrawCallback(Closure func)
+        public override void HookEvents()
         {
-            this.DrawCallbacks += func.GetDelegate();
+            Drawing.OnDraw += DrawingOnOnDraw;
         }
-
         #endregion
 
         #region Methods
-
         /// <summary>
-        ///     Fired when the game is updated.
+        ///     Fired when objects are drawn.
         /// </summary>
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
-        private void DrawingOnDraw(EventArgs args)
+        private void DrawingOnOnDraw(EventArgs args)
         {
-            if (this.DrawCallbacks == null)
+            if (Callbacks == null)
             {
                 return;
             }
 
-            foreach (var d in this.DrawCallbacks.GetInvocationList().ToArray())
+            foreach (var d in Callbacks.GetInvocationList().ToArray())
             {
                 try
                 {
@@ -54,7 +46,6 @@
                 }
             }
         }
-
         #endregion
     }
 }

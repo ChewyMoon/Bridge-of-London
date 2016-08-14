@@ -1,59 +1,53 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BridgeOfLondon.Core.Wrappers;
-using LeagueSharp;
-using MoonSharp.Interpreter;
-
-namespace BridgeOfLondon.Core.API.Callbacks
+﻿namespace BridgeOfLondon.Core.API.Callbacks
 {
-    internal partial class CallbackProvider
+    using System;
+    using System.Linq;
+    using LeagueSharp;
+    using MoonSharp.Interpreter;
+    using Core.Wrappers;
+    internal class CreateObjectCallback : Callback
     {
         #region Properties
-
-        /// <summary>
-        /// The event that raises OnTick Callbacks
-        /// </summary>
-        private event ScriptFunctionDelegate CreateObjectCallbacks;
+        public override string AddCallbackLuaFunctionName => "AddCreateObjCallback";
+        public override string DefaultCallbackFunctionName => "OnCreateObj"; 
+        public override event ScriptFunctionDelegate Callbacks;
         #endregion
 
-        #region Public Methods and Operators
-
-
+        #region Public Methods
         /// <summary>
-        ///     Adds the tick callback.
+        /// Hooks the events
         /// </summary>
-        /// <param name="func">The function.</param>
-        public void AddCreateObjectCallback(Closure func)
+        public override void HookEvents()
         {
-            CreateObjectCallbacks += func.GetDelegate();
+            GameObject.OnCreate += GameObjectOnOnCreate;
         }
+        #endregion
 
+        #region Methods
         /// <summary>
-        /// Fired when a game object is created.
+        ///     Fired when a game object is created.
         /// </summary>
-        /// <param name="args">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private void OnCreateObject(GameObject sender, EventArgs args)
+        /// <param name="sender"> The <see cref="GameObject"/> instance that was created</param>
+        /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
+        private void GameObjectOnOnCreate(GameObject sender, EventArgs args)
         {
-            if (CreateObjectCallbacks == null)
+            if (Callbacks == null)
             {
                 return;
             }
-            var luaSender = sender.ToLuaGameObject();
-            foreach (Delegate d in CreateObjectCallbacks.GetInvocationList().ToArray())
+            var luaObject = sender.ToLuaGameObject();
+            foreach (var d in Callbacks.GetInvocationList().ToArray())
             {
                 try
                 {
-                    ((ScriptFunctionDelegate)d)(luaSender);
+                    ((ScriptFunctionDelegate)d)(luaObject);
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e);
                 }
             }
-        }
+        } 
         #endregion
     }
 }
