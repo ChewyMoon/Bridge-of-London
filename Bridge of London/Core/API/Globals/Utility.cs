@@ -24,7 +24,7 @@ namespace BridgeOfLondon.Core.API.Globals
         private void AddChatApi(Script script)
         {
             script.Globals["PrintChat"] = (Action<string, object[]>) Game.PrintChat;
-            script.Globals["SendChat"]  = (Action<string, object[]>) Game.PrintChat;//Eh
+            script.Globals["SendChat"]  = (Action<string, object[]>) Game.Say;
             //BlockChat() missing
         }
 
