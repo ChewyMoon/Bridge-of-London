@@ -10,7 +10,7 @@
         #region Properties
         public override string AddCallbackLuaFunctionName => "AddDeleteObjCallback";
         public override string DefaultCallbackFunctionName => "OnDeleteObj";
-        public override event ScriptFunctionDelegate Callbacks;
+        public event ScriptFunctionDelegate Callbacks;
         #endregion
 
         #region Public Methods
@@ -20,6 +20,11 @@
         public override void HookEvents()
         {
             GameObject.OnDelete += GameObjectOnOnDelete;
+        }
+
+        public override void AddCallback(Closure function)
+        {
+            Callbacks += function.GetDelegate();
         }
         #endregion
 

@@ -10,7 +10,7 @@
         #region Properties
         public override string AddCallbackLuaFunctionName => "AddCreateObjCallback";
         public override string DefaultCallbackFunctionName => "OnCreateObj"; 
-        public override event ScriptFunctionDelegate Callbacks;
+        public  event ScriptFunctionDelegate Callbacks;
         #endregion
 
         #region Public Methods
@@ -20,6 +20,11 @@
         public override void HookEvents()
         {
             GameObject.OnCreate += GameObjectOnOnCreate;
+        }
+
+        public override void AddCallback(Closure function)
+        {
+            Callbacks += function.GetDelegate();
         }
         #endregion
 

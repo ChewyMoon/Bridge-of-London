@@ -11,7 +11,7 @@ namespace BridgeOfLondon.Core.API.Callbacks
         #region Properties
         public override string AddCallbackLuaFunctionName => "AddLoadCallback";
         public override string DefaultCallbackFunctionName => "OnLoad";
-        public override event ScriptFunctionDelegate Callbacks;
+        public  event ScriptFunctionDelegate Callbacks;
         #endregion
 
         #region Public Methods
@@ -23,6 +23,10 @@ namespace BridgeOfLondon.Core.API.Callbacks
             CustomEvents.Game.OnGameLoad += GameOnOnGameLoad;
         }
 
+        public override void AddCallback(Closure function)
+        {
+            Callbacks += function.GetDelegate();
+        }
         #endregion
 
         #region Methods

@@ -11,7 +11,7 @@ namespace BridgeOfLondon.Core.API.Callbacks
         #region Properties
         public override string AddCallbackLuaFunctionName => "AddProcessSpellCallback";
         public override string DefaultCallbackFunctionName => "OnProcessSpell";
-        public override event ScriptFunctionDelegate Callbacks;
+        public  event ScriptFunctionDelegate Callbacks;
         #endregion
 
         #region Public Methods
@@ -23,6 +23,10 @@ namespace BridgeOfLondon.Core.API.Callbacks
             Obj_AI_Base.OnProcessSpellCast += ObjAiBaseOnOnProcessSpellCast;
         }
 
+        public override void AddCallback(Closure function)
+        {
+            Callbacks += function.GetDelegate();
+        }
         #endregion
 
         #region Methods

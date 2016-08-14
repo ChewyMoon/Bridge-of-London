@@ -9,7 +9,7 @@
         #region Properties
         public override string AddCallbackLuaFunctionName => "AddDrawCallback";
         public override string DefaultCallbackFunctionName => "OnDraw";
-        public override event ScriptFunctionDelegate Callbacks; 
+        public event ScriptFunctionDelegate Callbacks; 
         #endregion
 
         #region Public Methods
@@ -19,6 +19,11 @@
         public override void HookEvents()
         {
             Drawing.OnDraw += DrawingOnOnDraw;
+        }
+
+        public override void AddCallback(Closure function)
+        {
+            Callbacks += function.GetDelegate();
         }
         #endregion
 

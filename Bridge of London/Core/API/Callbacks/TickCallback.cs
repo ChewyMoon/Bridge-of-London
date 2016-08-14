@@ -9,7 +9,7 @@
         #region Properties
         public override string AddCallbackLuaFunctionName => "AddTickCallback";
         public override string DefaultCallbackFunctionName => "OnTick";
-        public override event ScriptFunctionDelegate Callbacks;
+        public event ScriptFunctionDelegate Callbacks;
         #endregion
 
         #region Public Methods
@@ -19,6 +19,15 @@
         public override void HookEvents()
         {
             Game.OnUpdate += GameOnOnUpdate;
+        }
+
+        /// <summary>
+        ///     Adds the OnTick callback.
+        /// </summary>
+        /// <param name="function">The function.</param>
+        public override void AddCallback(Closure function)
+        {
+            Callbacks += function.GetDelegate();
         }
         #endregion
 

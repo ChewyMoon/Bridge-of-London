@@ -12,10 +12,6 @@ namespace BridgeOfLondon.Core.API.Callbacks
         public virtual string AddCallbackLuaFunctionName { get;}
         public virtual string DefaultCallbackFunctionName { get; }
 
-        //http://stackoverflow.com/questions/756237/c-raising-an-inherited-event
-        public virtual event ScriptFunctionDelegate Callbacks;
-
-
         public void AddApi(Script script)
         {
             script.Globals[AddCallbackLuaFunctionName] = (Action<Closure>)this.AddCallback;
@@ -26,12 +22,11 @@ namespace BridgeOfLondon.Core.API.Callbacks
         }
 
         /// <summary>
-        ///     Adds the Delete Object callback.
+        ///     Adds the Object callback.
         /// </summary>
         /// <param name="function">The function.</param>
         public virtual void AddCallback(Closure function)
         {
-            Callbacks += function.GetDelegate();
         }
 
         public void RegisterDefaultCallback(Script script)
