@@ -76,7 +76,7 @@ namespace BridgeOfLondon.Core
                 LuaVM = new Script(this.Config.SandboxLevel);
 
                 ((ScriptLoaderBase)LuaVM.Options.ScriptLoader).ModulePaths = new[] { "Common/?", "Common/?.lua" };
-                ((ScriptLoaderBase)LuaVM.Options.ScriptLoader).IgnoreLuaPathGlobal = true;
+                ((ScriptLoaderBase)LuaVM.Options.ScriptLoader).IgnoreLuaPathGlobal = false;
             }
             catch (Exception e)
             {
@@ -137,9 +137,8 @@ namespace BridgeOfLondon.Core
                 try
                 {
                     Console.WriteLine($"Loading {luaScript}");
-                    LuaVM.DoFile(luaScript, LuaVM.CreateEnvironment(luaScript));
-
-                    //this.Scripts.Add(script);
+                    var env = LuaVM.CreateEnvironment(Path.GetFileName(luaScript));
+                    LuaVM.DoFile(luaScript, env);
                 }
                 catch (Exception e)
                 {

@@ -91,7 +91,10 @@
                     new StringList(new[] { "Hard", "Soft", "Default", "Unrestricted" }, 2)));
 
             this.Menu.AddItem(
-                new MenuItem("ScriptPath", ".lua Script path")).SetTooltip(ScriptDirectory);
+                new MenuItem("ScriptPath", "Lua script path")).SetTooltip(ScriptDirectory);
+
+            this.Menu.AddItem(
+                new MenuItem("LibPath", "Library Script path")).SetTooltip(LibraryDirectory);
 
             this.Menu.AddToMainMenu();
         }

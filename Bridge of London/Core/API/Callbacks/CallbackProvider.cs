@@ -21,7 +21,6 @@ namespace BridgeOfLondon.Core.API.Callbacks
         {
             foreach (var callback in callbacks)
             {
-                Console.WriteLine(callback);
                 callback.AddApi(script);
             }
         }
