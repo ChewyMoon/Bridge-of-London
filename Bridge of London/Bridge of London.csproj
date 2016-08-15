@@ -73,6 +73,7 @@
     <Compile Include="Core\API\Globals\SpellApi.cs" />
     <Compile Include="Core\API\Globals\Utility.cs" />
     <Compile Include="Core\API\Managers\HeroManager.cs" />
+    <Compile Include="Core\API\Managers\LuaObjectManager.cs" />
     <Compile Include="Core\ScriptExtensions.cs" />
     <Compile Include="Core\Wrappers\Buff.cs" />
     <Compile Include="Core\Wrappers\LuaGameObject.cs" />

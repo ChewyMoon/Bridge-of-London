@@ -10,7 +10,7 @@
         #region Properties
         public override string AddCallbackLuaFunctionName => "AddCreateObjCallback";
         public override string DefaultCallbackFunctionName => "OnCreateObj"; 
-        public virtual event ScriptFunctionDelegate Callbacks;
+        public override event ScriptFunctionDelegate Callbacks;
         #endregion
 
         #region Public Methods
