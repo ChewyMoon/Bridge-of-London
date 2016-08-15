@@ -41,7 +41,7 @@ namespace BridgeOfLondon.Core.API.Callbacks
             foreach (var tablePair in envs.Pairs)
             {
                 var envTable = (tablePair.Value.Table);
-                Console.WriteLine("Registering std calls for " + tablePair.Key);
+                Console.WriteLine($"Registering {DefaultCallbackFunctionName} calls for {tablePair.Key}");
                 var function = envTable[DefaultCallbackFunctionName] as Closure;
                 if (function == null)
                 {

@@ -12,11 +12,6 @@
         public override event ScriptFunctionDelegate Callbacks;
         #endregion
 
-        public TickCallback() 
-        {
-            Console.WriteLine("Created TickCallback instance " + AddCallbackLuaFunctionName);
-        }
-
         #region Public Methods
         /// <summary>
         /// Hooks the events
