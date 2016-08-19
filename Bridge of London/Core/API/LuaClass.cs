@@ -3,6 +3,7 @@ using MoonSharp.Interpreter;
 
 namespace BridgeOfLondon.Core.API
 {
+    //TODO: Test performance vs LUA implementation
     internal class LuaClass : ILuaApiProvider
     {
         public void AddApi(Script script)
@@ -19,24 +20,30 @@ namespace BridgeOfLondon.Core.API
         {
             var @class = new Table(context.OwnerScript);
 
-            var f = new Func<Table, DynValue[], Table>(
-                (self, args) =>
-                {
-                    var instance = new Table(context.OwnerScript);
-                    instance.MetaTable = new Table(context.OwnerScript)
-                    {
-                        ["self"] = new Table(context.OwnerScript),
-                        ["__index"] = context.CurrentGlobalEnv[className],
-                        ["__call"] = null
-                    };
-                    context.Call((DynValue) instance["__init"], args);
-                    return instance;
-                });
-
             @class.MetaTable = new Table(context.OwnerScript)
             {
-                ["__call"] = f
+                ["__call"] = (Func<ScriptExecutionContext, Table, object[], Table>)createInstance
             };
+            context.CurrentGlobalEnv[className] = @class;
+        }
+
+        private Table createInstance(ScriptExecutionContext context, Table @class, params object[] args)
+        {
+            var instance = new Table(context.OwnerScript);
+            instance.MetaTable = new Table(context.OwnerScript)
+            {
+                ["self"] = new Table(context.OwnerScript),
+                ["__index"] = @class,
+                ["__call"] = null
+            };
+            DynValue[] dynValues = new DynValue[args.Length + 1];
+            dynValues[0] = DynValue.NewTable(instance); //First argument is self
+            for (int i = 0; i < args.Length; i++)
+            {
+                dynValues[i + 1] = DynValue.FromObject(context.OwnerScript, args[i]); //Bottleneck?
+            }
+            ((Closure)@class["__init"]).GetDelegate()(dynValues);
+            return instance;
         }
     }
 }
