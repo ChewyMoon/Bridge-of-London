@@ -140,6 +140,11 @@ namespace BridgeOfLondon.Core
                     var env = LuaVM.CreateEnvironment(Path.GetFileName(luaScript));
                     LuaVM.DoFile(luaScript, env);
                 }
+                catch (SyntaxErrorException e)
+                {
+                    this.PrintMessage(e.DecoratedMessage);
+                    Console.WriteLine(e.DecoratedMessage);
+                }
                 catch (Exception e)
                 {
                     this.PrintMessage(

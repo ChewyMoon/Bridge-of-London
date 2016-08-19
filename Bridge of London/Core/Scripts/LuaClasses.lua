@@ -2,12 +2,6 @@ function class( className )
 	_ENV[className] = 
 	{
 		__ctr = function( self, ... )
-			--[[local arguments = {...}
-			print('Values:')
-			for i=1,select('#',...) do
-				print(i..':',arguments[i])
-			end
-			print('Values done')]]
 			local instance = {}
 			local instance_metatable =
 			{
