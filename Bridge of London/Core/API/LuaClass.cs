@@ -36,13 +36,10 @@ namespace BridgeOfLondon.Core.API
                 ["__index"] = @class,
                 ["__call"] = null
             };
-            DynValue[] dynValues = new DynValue[args.Length + 1];
-            dynValues[0] = DynValue.NewTable(instance); //First argument is self
-            for (int i = 0; i < args.Length; i++)
-            {
-                dynValues[i + 1] = DynValue.FromObject(context.OwnerScript, args[i]); //Bottleneck?
-            }
-            ((Closure)@class["__init"]).GetDelegate()(dynValues);
+            object[] obs = new object[args.Length + 1];
+            obs[0] = instance; //First argument is the "this" pointer/self table
+            args.CopyTo(obs, 1);
+            ((Closure)@class["__init"]).GetDelegate()(obs);
             return instance;
         }
     }
