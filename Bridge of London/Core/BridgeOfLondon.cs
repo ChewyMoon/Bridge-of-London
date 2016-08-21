@@ -145,6 +145,11 @@ namespace BridgeOfLondon.Core
                     this.PrintMessage(e.DecoratedMessage);
                     Console.WriteLine(e.DecoratedMessage);
                 }
+                catch (ScriptRuntimeException e)
+                {
+                    this.PrintMessage(e.DecoratedMessage);
+                    Console.WriteLine(e.DecoratedMessage);
+                }
                 catch (Exception e)
                 {
                     this.PrintMessage(
