@@ -1,14 +1,11 @@
 ﻿namespace BridgeOfLondon.Core.API.Globals
 {
-    using System;
-
     using LeagueSharp;
-    using LeagueSharp.Common;
 
     using MoonSharp.Interpreter;
 
     /// <summary>
-    /// Adds constant values to the Lua script.
+    ///     Adds constant values to the Lua script.
     /// </summary>
     /// <seealso cref="BridgeOfLondon.Core.API.ILuaApiProvider" />
     internal class Constants : ILuaApiProvider
@@ -16,7 +13,7 @@
         #region Public Methods and Operators
 
         /// <summary>
-        /// Adds the API.
+        ///     Adds the API.
         /// </summary>
         /// <param name="script">The script.</param>
         public void AddApi(Script script)
@@ -27,15 +24,13 @@
             this.RegisterWindow(script);
             this.RegisterWndProc(script);
             this.RegisterPingCategory(script);
-            script.Globals["LeagueSharp"] = true;
         }
 
         /// <summary>
-        /// Hooks the events.
+        ///     Hooks the events.
         /// </summary>
         public void HookEvents()
         {
-            
         }
 
         #endregion
@@ -43,7 +38,7 @@
         #region Methods
 
         /// <summary>
-        /// Registers the ping category.
+        ///     Registers the ping category.
         /// </summary>
         /// <param name="script">The script.</param>
         private void RegisterPingCategory(Script script)
@@ -57,7 +52,7 @@
         }
 
         /// <summary>
-        /// Registers the spell slots.
+        ///     Registers the spell slots.
         /// </summary>
         /// <param name="script">The script.</param>
         private void RegisterSpellSlots(Script script)
@@ -82,7 +77,7 @@
         }
 
         /// <summary>
-        /// Registers the spell states.
+        ///     Registers the spell states.
         /// </summary>
         /// <param name="script">The script.</param>
         private void RegisterSpellStates(Script script)
@@ -96,7 +91,7 @@
         }
 
         /// <summary>
-        /// Registers the team.
+        ///     Registers the team.
         /// </summary>
         /// <param name="script">The script.</param>
         private void RegisterTeam(Script script)
@@ -111,7 +106,7 @@
         }
 
         /// <summary>
-        /// Registers the window.
+        ///     Registers the window.
         /// </summary>
         /// <param name="script">The script.</param>
         private void RegisterWindow(Script script)
@@ -123,7 +118,7 @@
         }
 
         /// <summary>
-        /// Registers the codes that the window will process.
+        ///     Registers the codes that the window will process.
         /// </summary>
         /// <param name="script">The script.</param>
         private void RegisterWndProc(Script script)
